@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 20:21:29 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/16 20:53:58 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,15 @@ int					fdf_draw(t_crds all_ps[512], int p_nb, char *source_f)
 	mv = fdf_find(all_ps, p_nb) + 1;
 	while (i < (p_nb - 1))
 	{
-		fdf_p_struct(all_ps, i);
 		fdf_dw_ln(all_ps, new_w, i, i + 1);//horiz
-		if (((i + mv) > 0) && ((i + mv) < p_nb))
+	 	if (((i + mv) > 0) && ((i + mv) < p_nb))
+		{
+			fdf_p_struct(all_ps, i);
 			fdf_dw_ln(all_ps, new_w, i, i + mv);//vert
+		}
 		i++;
 	}
-	mlx_put_image_to_window(new_w.mlx_p, new_w.win_p, new_w.img_p, 800, 400);
+	mlx_put_image_to_window(new_w.mlx_p, new_w.win_p, new_w.img_p, 200, 200);
 	mlx_loop(new_w.mlx_p);
 	printf("-------fdf_draw end-------\n");
 	return (0);
@@ -107,16 +109,18 @@ int					fdf_draw(t_crds all_ps[512], int p_nb, char *source_f)
 int				fdf_find(t_crds all_ps[512], int p_nb)
 {
 	int			tmp;
+	int			i;
 
 	printf("-------fdf_find start-------\n");
-	tmp = all_ps[p_nb].x;
-	while (p_nb--)
+	tmp = all_ps[0].x;
+	i = 0;
+	while (i < (p_nb - 1))
 	{
-		if (all_ps[p_nb].x > tmp)
-			tmp = all_ps[p_nb].x;
+		if (all_ps[i].x > tmp)
+			tmp = all_ps[i].x;
+		i++;
 	}
-	tmp = tmp / 30;
-	ft_putnbr(tmp);
+	tmp = tmp / 10;
 	printf("-------fdf_find end-------\n");
 	return (tmp);
 }

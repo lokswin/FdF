@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 19:59:15 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/16 20:54:54 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ static int			file_to_arr(t_crds all_ps[512], char *s, int p_nb, int y)
 	while (i < x)
 	{	
 		all_ps[p_nb].next = &all_ps[p_nb + 1];
-		all_ps[p_nb].x = 30 * i;
-		all_ps[p_nb].y = 30 * y;
+		all_ps[p_nb].x = 10 * i;
+		all_ps[p_nb].y = 10 * y;
 		all_ps[p_nb].z = ft_atoi(buff_splt[i]);
 		//fdf_rotate_xy(&all_ps[p_nb].x, &all_ps[p_nb].y, all_ps[p_nb].z, 3);
 		p_nb++;
