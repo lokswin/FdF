@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 16:31:57 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/16 19:30:09 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 /*
 ** **************************************************************************
-**	void fdf_rotate_xy(int *x, int *y, int z, int dir)
+**	void fdf_rotate_xy(int *x, int *y, int z, int iso_p)
 **	Function for map rotation
 ** **************************************************************************
 */
 
-void		fdf_rotate_xy(int *x, int *y, int z, int dir)
+void		fdf_rotate_xy(int *x, int *y, int z, int iso_p)
 {
 	float	angle;
 	int		tmp_x;
@@ -29,22 +29,22 @@ void		fdf_rotate_xy(int *x, int *y, int z, int dir)
 	angle = 0.523599;//0.46373398
 	tmp_x = *x;
 	tmp_y = *y;
-	if (dir == 1)//Slanting left:
+	if (iso_p == 1)//Slanting left:
 	{
 		*x = (tmp_x - tmp_y) * -cos(angle);
 		*y = ((tmp_x + tmp_y) * sin(angle)) - z;
 	}
-	else if (dir == 2)//Mirror image slanting right:
+	else if (iso_p == 2)//Mirror image slanting right:
 	{
 		*x = (tmp_x - tmp_y) * cos(angle);
 		*y = ((tmp_x + tmp_y) * sin(angle)) - z;
 	}
-	else if (dir == 3)//Mirror image slanting left:
+	else if (iso_p == 3)//Mirror image slanting left:
 	{
 		*x = (tmp_x + tmp_y) * -cos(angle);
 		*y = ((tmp_x - tmp_y) * sin(angle)) - z;
 	}
-	else if (dir == 0)
+	else if (iso_p == 0)
 	{
 		*x = (tmp_x - tmp_y) * cos(angle);
 		*y = (tmp_x + tmp_y) * sin(angle) - z;

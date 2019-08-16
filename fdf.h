@@ -64,6 +64,7 @@ void				fdf_new_win(t_w *new_w, int ln_nb, char *source_f);
 int					fdf_find_x(t_crds line, float y, float x, int i);
 int					fdf_dw_ln(t_crds *point, t_w new_w, int p1, int p2);
 int					fdf_draw(t_crds all_lns[512], int ln_nb, char *source_f);
+int					fdf_find(t_crds all_ps[512], int p_nb);
 
 int					fdf_keys(int key, void *param);
 t_w					*fdf_ui(t_w *new_w, int first_time);

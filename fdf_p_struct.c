@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/08 20:01:15 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/16 18:00:35 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 /*
 ** **************************************************************************
-**	int fdf_find_xy(t_crds line, float y, float x, int i)
+**	void fdf_p_struct(t_crds all_ps[512], int p_nb)
 **	Function to print one structure node
 **
 ** **************************************************************************
 */
 
-void		fdf_p_struct(t_crds all_lns[512], int ln_nb)
+void		fdf_p_struct(t_crds all_ps[512], int p_nb)
 {
 	int		i;
 	int		j;
@@ -29,8 +29,8 @@ void		fdf_p_struct(t_crds all_lns[512], int ln_nb)
 	i = 0;
 	j = 0;
 
-	printf("all_lns[%d] x=%d y=%d z=%d\n", \
-	ln_nb, all_lns[ln_nb].x, all_lns[ln_nb].y, all_lns[ln_nb].z);
+	printf("all_ps[%d] x=%d y=%d z=%d\n", \
+	p_nb, all_ps[p_nb].x, all_ps[p_nb].y, all_ps[p_nb].z);
 	printf("-------fdf_p_struct end-------");
 
 }

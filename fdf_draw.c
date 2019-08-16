@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 16:55:01 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/16 20:21:29 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** **************************************************************************
 */
 
-int			fdf_dw_ln(t_crds *point, t_w new_w, int p1, int p2)
+int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 {
 	int		x1;
 	int		y1;
@@ -30,14 +30,14 @@ int			fdf_dw_ln(t_crds *point, t_w new_w, int p1, int p2)
 	int		step;
 	int		i;
 
-	printf("\n-------fdf_dw_ln start-------\n");
-	x1 = point[p1].x;
-	y1 = point[p1].y;
-	x2 = point[p2].x;
-	y2 = point[p2].y;
+	printf("\n-------fdf_dw_ln start--p1=%d; p2=%d\n", p1, p2);
+	x1 = all_ps[p1].x;
+	y1 = all_ps[p1].y;
+	x2 = all_ps[p2].x;
+	y2 = all_ps[p2].y;
 	//fdf_rotate_xy(&x1, &y1, point[p_nb].z, new_w.iso_p);
-	fdf_rotate_xy(&x1, &y1, point[p1].z, new_w.iso_p);
-	fdf_rotate_xy(&x2, &y2, point[p2].z, new_w.iso_p);
+	fdf_rotate_xy(&x1, &y1, all_ps[p1].z, new_w.iso_p);
+	fdf_rotate_xy(&x2, &y2, all_ps[p2].z, new_w.iso_p);
 	dx = x2 - x1;
 	dy = y2 - y1;
 	if (abs(dx) >= abs(dy))
@@ -48,7 +48,8 @@ int			fdf_dw_ln(t_crds *point, t_w new_w, int p1, int p2)
 	dy = dy / step;
 	while(step--)
 	{
-		printf("x1=%d, y1=%d, step=%d, dx=%d, dy=%d\n", x1, y1, step, dx, dy);
+		//printf("x1=%d, y1=%d, step=%d, dx=%d, dy=%d\n", x1, y1, step, dx, dy);
+	
 		i = (x1 * (new_w.bitspp / 8)) + (y1 * new_w.ln_sz);
 		new_w.img[i] = new_w.color; // B — Blue
 		new_w.img[++i] = new_w.color >> 8; // G — Green
@@ -73,27 +74,51 @@ int					fdf_draw(t_crds all_ps[512], int p_nb, char *source_f)
 {
 	t_w				new_w;
 	int				i;
-	int				j;
-	int				k;
+	int				mv;
+
 
 	printf("\n-------fdf_draw start-------\n");
 	i = 0;
-	j = 0;
-	k = 0;
 	fdf_new_win(&new_w, p_nb, source_f);
 	new_w.point = all_ps;
 	mlx_key_hook(new_w.win_p, fdf_keys, &new_w);
-	i = (p_nb-1) / (all_ps[p_nb - 1].y / 30);
-	while (j < (p_nb - 1))
+	mv = fdf_find(all_ps, p_nb) + 1;
+	while (i < (p_nb - 1))
 	{
-		fdf_dw_ln(all_ps, new_w, j, (p_nb - 1));
-		j++;
+		fdf_p_struct(all_ps, i);
+		fdf_dw_ln(all_ps, new_w, i, i + 1);//horiz
+		if (((i + mv) > 0) && ((i + mv) < p_nb))
+			fdf_dw_ln(all_ps, new_w, i, i + mv);//vert
+		i++;
 	}
 	mlx_put_image_to_window(new_w.mlx_p, new_w.win_p, new_w.img_p, 800, 400);
-	fdf_p_struct(all_ps, p_nb - 1);
 	mlx_loop(new_w.mlx_p);
 	printf("-------fdf_draw end-------\n");
 	return (0);
+}
+
+/*
+** **************************************************************************
+**	int fdf_find()
+**	Function to find next line point
+** **************************************************************************
+*/
+
+int				fdf_find(t_crds all_ps[512], int p_nb)
+{
+	int			tmp;
+
+	printf("-------fdf_find start-------\n");
+	tmp = all_ps[p_nb].x;
+	while (p_nb--)
+	{
+		if (all_ps[p_nb].x > tmp)
+			tmp = all_ps[p_nb].x;
+	}
+	tmp = tmp / 30;
+	ft_putnbr(tmp);
+	printf("-------fdf_find end-------\n");
+	return (tmp);
 }
 
 /*
