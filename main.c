@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 20:54:54 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/16 21:12:00 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void			delay(int number_of_seconds)
 ** **************************************************************************
 */
 
-static int			file_to_arr(t_crds all_ps[512], char *s, int p_nb, int y)
+static int			file_to_arr(t_crds all_ps[51200], char *s, int p_nb, int y)
 {
 	char			**buff_splt;
 	int				i;
@@ -53,6 +53,7 @@ static int			file_to_arr(t_crds all_ps[512], char *s, int p_nb, int y)
 	buff_splt = ft_strsplit(s, ' ');
 	while (buff_splt[x] != '\0')
 		x++;
+	ft_putnbr(p_nb);
 	while (i < x)
 	{	
 		all_ps[p_nb].next = &all_ps[p_nb + 1];
@@ -69,12 +70,12 @@ static int			file_to_arr(t_crds all_ps[512], char *s, int p_nb, int y)
 
 /*
 ** **************************************************************************
-**	static int fdf_read(t_crds all_ps[512], int fd)
+**	static int fdf_read(t_crds all_ps[51200], int fd)
 **	Function to read files
 ** **************************************************************************
 */
 
-static int		fdf_read(t_crds all_ps[512], int fd)
+static int		fdf_read(t_crds all_ps[51200], int fd)
 {
 	char		*buff;
 	int			gnl_res;
@@ -87,7 +88,7 @@ static int		fdf_read(t_crds all_ps[512], int fd)
 	gnl_res = 1;
 	while (gnl_res)
 	{
-		if (!(buff = (char*)malloc(sizeof(char) * 512)))
+		if (!(buff = (char*)malloc(sizeof(char) * 51200)))
 		{
 			ft_putstr_fd("fdf_read malloc error", 2);
 			exit(1);
@@ -136,7 +137,7 @@ static int		fdf_open(char *source_f)
 
 int				main(int argc, char **argv)
 {
-	t_crds		all_ps[512];
+	t_crds		all_ps[51200];
 	int			p_nb;
 	int			fd;
 
