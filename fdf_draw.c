@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/18 20:04:53 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/18 21:23:12 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,36 +23,33 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 {
 	double	x1;
 	double	y1;
-	double	x2;
-	double	y2;
 	double	dx;
 	double	dy;
 	int		step;
 
 	printf("\n-------fdf_dw_ln start--p1=%d; p2=%d\n", p1, p2);
+	x1 = all_ps[p2].x;
+	y1 = all_ps[p2].y;
+	fdf_rotate_xy(&x1, &y1, all_ps[p2].z, new_w.iso_p);
+	dx = x1;
+	dy = y1;
 	x1 = all_ps[p1].x;
 	y1 = all_ps[p1].y;
-	x2 = all_ps[p2].x;
-	y2 = all_ps[p2].y;
 	fdf_rotate_xy(&x1, &y1, all_ps[p1].z, new_w.iso_p);
-	fdf_rotate_xy(&x2, &y2, all_ps[p2].z, new_w.iso_p);
-	dx = x2 - x1;
-	dy = y2 - y1;
+	dx = dx - x1;
+	dy = dy - y1;
 	if (fabs(dx) >= fabs(dy))
 		step = fabs(dx);
 	else
 		step = fabs(dy);
 	dx = dx / step;
 	dy = dy / step;
-	printf("x1=%f, y1=%f, step=%d, dx=%f, dy=%f iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
-	printf("x2=%f, y2=%f\n", x2, y2);
-	while(step > 0)
+	while(step--)
 	{
-		printf("x1=%f, y1=%f, step=%d, dx=%f, dy=%f iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
-	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, 200+x1, 200+y1, new_w.color);
+		//printf("x1=%f, y1=%f, step=%d, dx=%f, dy=%f iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
+	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, 400+x1, 400+y1, new_w.color);
 		x1 = x1 + dx;
     	y1 = y1 + dy;
-		step--;
 	}
 	printf("-------fdf_dw_ln end-------");
 	return (1);
@@ -77,14 +74,14 @@ int					fdf_draw(t_crds all_ps[260000], int p_nb, char *source_f)
 	new_w.point = all_ps;
 	mlx_key_hook(new_w.win_p, fdf_keys, &new_w);
 	new_w.mv = fdf_find(all_ps, p_nb) + 1;
-	//fdf_dw_ln(all_ps, new_w, i, i + 1);
 	 while (i < (p_nb - 1))
 	{
-		printf("mv=%d", new_w.mv);
+		fdf_p_struct(all_ps, i);
+		if (new_w.point[i].y == new_w.point[i + 1].y)
 			fdf_dw_ln(all_ps, new_w, i, i + 1);//horiz lines
 	 	if (((i + new_w.mv) > 0) && ((i + new_w.mv) < p_nb))
 		{
-			fdf_p_struct(all_ps, i);
+			
 			fdf_dw_ln(all_ps, new_w, i, i + new_w.mv);//vert lines
 		}
 		i++;
