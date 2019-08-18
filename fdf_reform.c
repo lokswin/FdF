@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 19:30:09 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/18 17:54:39 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,21 +65,24 @@ int			fdf_redraw(t_w *new_w)
 
 	printf("\n-------fdf_redraw start-------\n");
 	i = 0;
-	mlx_destroy_image(new_w->mlx_p, new_w->img_p);
 	mlx_clear_window(new_w->mlx_p, new_w->win_p);
+	mlx_destroy_image(new_w->mlx_p, new_w->img_p);
 	new_w->img_p = NULL;
 	new_w->img = NULL;
 	fdf_ui(new_w, 0);
-	new_w->img_p = mlx_new_image(new_w->mlx_p, 400, 400);
+	new_w->img_p = mlx_new_image(new_w->mlx_p, 1300, 1300);
 	new_w->img = mlx_get_data_addr(new_w->img_p, \
 	&new_w->bitspp, &new_w->ln_sz, &new_w->endi);
 	while (i < (new_w->p_nb - 1))
 	{
-		//new_w->img = new_w->img + new_w->ln_sz;
-		fdf_dw_ln(new_w->point, *new_w, i, new_w->p_nb - 1);
+		fdf_dw_ln(new_w->point, *new_w, i, i + 1);
+		if (((i + new_w->mv) > 0) && ((i + new_w->mv) < new_w->p_nb))
+		{
+			fdf_dw_ln(new_w->point, *new_w, i, i + new_w->mv);//vert lines
+		}
 		i++;
 	}
-	mlx_put_image_to_window(new_w->mlx_p, new_w->win_p, new_w->img_p, 800, 400);
+	mlx_put_image_to_window(new_w->mlx_p, new_w->win_p, new_w->img_p, 100, 100);
 	printf("\n-------fdf_redraw end-------\n");
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 21:15:12 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/18 18:09:22 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 	x2 = all_ps[p2].x;
 	y2 = all_ps[p2].y;
 	//fdf_rotate_xy(&x1, &y1, point[p_nb].z, new_w.iso_p);
-	fdf_rotate_xy(&x1, &y1, all_ps[p1].z, new_w.iso_p);
-	fdf_rotate_xy(&x2, &y2, all_ps[p2].z, new_w.iso_p);
+	fdf_rotate_xy(&y1, &x1, 0, new_w.iso_p);
+	fdf_rotate_xy(&y2, &x2, 0, new_w.iso_p);
 	dx = x2 - x1;
 	dy = y2 - y1;
 	if (abs(dx) >= abs(dy))
@@ -48,8 +48,7 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 	dy = dy / step;
 	while(step--)
 	{
-		//printf("x1=%d, y1=%d, step=%d, dx=%d, dy=%d\n", x1, y1, step, dx, dy);
-	
+		printf("x1=%d, y1=%d, step=%d, dx=%d, dy=%d iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
 		i = (x1 * (new_w.bitspp / 8)) + (y1 * new_w.ln_sz);
 		new_w.img[i] = new_w.color; // B — Blue
 		new_w.img[++i] = new_w.color >> 8; // G — Green
@@ -65,35 +64,34 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 
 /*
 ** **************************************************************************
-**	int fdf_draw(t_crds all_ps[512000], int p_nb, char *source_f)
+**	int fdf_draw(t_crds all_ps[260000], int p_nb, char *source_f)
 **	Function to draw
 ** **************************************************************************
 */
 
-int					fdf_draw(t_crds all_ps[51200], int p_nb, char *source_f)
+int					fdf_draw(t_crds all_ps[260000], int p_nb, char *source_f)
 {
 	t_w				new_w;
 	int				i;
-	int				mv;
-
 
 	printf("\n-------fdf_draw start-------\n");
 	i = 0;
 	fdf_new_win(&new_w, p_nb, source_f);
 	new_w.point = all_ps;
 	mlx_key_hook(new_w.win_p, fdf_keys, &new_w);
-	mv = fdf_find(all_ps, p_nb) + 1;
-	while (i < (p_nb - 9000))
+	new_w.mv = fdf_find(all_ps, p_nb) + 1;
+	while (i < (p_nb - 1))
 	{
-		fdf_dw_ln(all_ps, new_w, i, i + 1);//horiz
-	 	if (((i + mv) > 0) && ((i + mv) < p_nb - 1))
+		printf("mv=%d", new_w.mv);
+		fdf_dw_ln(all_ps, new_w, i, i + 1);//horiz lines
+	 	if (((i + new_w.mv) > 0) && ((i + new_w.mv) < p_nb))
 		{
 			fdf_p_struct(all_ps, i);
-			fdf_dw_ln(all_ps, new_w, i, i + mv);//vert
+			fdf_dw_ln(all_ps, new_w, i, i + new_w.mv);//vert lines
 		}
 		i++;
 	}
-	mlx_put_image_to_window(new_w.mlx_p, new_w.win_p, new_w.img_p, 200, 200);
+	mlx_put_image_to_window(new_w.mlx_p, new_w.win_p, new_w.img_p, 100, 100);
 	mlx_loop(new_w.mlx_p);
 	printf("-------fdf_draw end-------\n");
 	return (0);
@@ -106,7 +104,7 @@ int					fdf_draw(t_crds all_ps[51200], int p_nb, char *source_f)
 ** **************************************************************************
 */
 
-int				fdf_find(t_crds all_ps[51200], int p_nb)
+int				fdf_find(t_crds all_ps[260000], int p_nb)
 {
 	int			tmp;
 	int			i;
@@ -120,7 +118,7 @@ int				fdf_find(t_crds all_ps[51200], int p_nb)
 			tmp = all_ps[i].x;
 		i++;
 	}
-	tmp = tmp / 10;
+	tmp = tmp / 30;
 	printf("-------fdf_find end-------\n");
 	return (tmp);
 }
