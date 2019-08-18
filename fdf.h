@@ -71,8 +71,7 @@ t_w					*fdf_ui(t_w *new_w, int first_time);
 
 void				fdf_p_struct(t_crds all_ps[260000], int p_nb);
 
-int					fdf_reform_xy(t_w new_w, int x, int y);
-void				fdf_rotate_xy(int *x, int *y, int z, int dir);
+void				fdf_rotate_xy(double *x, double *y, double z, int dir);
 int					fdf_redraw(t_w *new_w);
 
 #endif
