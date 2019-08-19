@@ -6,11 +6,19 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/19 19:31:29 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/19 21:02:37 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static void		fdf_xy_mid(t_w *new_w)
+{
+	new_w->y_mid = ((new_w->width) - (new_w->file_w)) / 2;
+	new_w->x_mid = ((new_w->height) - (new_w->file_h)) / 2;
+	//new_w->x_mid = ((new_w->width) - (new_w->file_w * (new_w->map_ln / 4))) / 2;
+	//new_w->y_mid = ((new_w->height) - (new_w->file_h * (new_w->map_ln / 8))) / 2;
+}
 
 /*
 ** **************************************************************************
@@ -23,14 +31,12 @@ void		fdf_new_win(t_w *new_w, int p_nb, char *source_f)
 {
 	printf("\n-------fdf_new_win start-------\n");
 	new_w->f_name = source_f;
-	new_w->width = 1200;
-	new_w->height = 1200;
-	new_w->iso_p = 2;
+	new_w->width = 700;
+	new_w->height = 700;
+	new_w->iso_p = 0;
+	new_w->angle = 0.523599;
 	new_w->p_nb = p_nb;
-	new_w->x_mid = ((new_w->width) - (new_w->file_w)) / 2;
-	new_w->y_mid = ((new_w->height) - (new_w->file_w)) / 2;
-	//new_w->x_mid = ((new_w->width - new_w->file_w) / 2);
-	//new_w->y_mid = ((new_w->height - new_w->file_w) / 2);
+	fdf_xy_mid(new_w);
 	if (!(new_w->mlx_p = mlx_init()))
 	{
 		ft_putstr_fd("mlx error", 2);

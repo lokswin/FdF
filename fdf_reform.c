@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/19 17:57:02 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/19 20:53:18 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,36 @@
 ** **************************************************************************
 */
 
-void		fdf_rotate_xy(double *x, double *y, double z, int iso_p)
+void		fdf_rotate_xy(double *x, double *y, double z, t_w *new_w)
 {
 	double	angle;
 	double	tmp_x;
 	double	tmp_y;
 
 	printf("\n-------fdf_rotate_xy start-------\n");
-	angle = 0.523599;//0.46373398;//0.523599;//30;
+	//angle = 0.523599;//0.46373398;//0.523599;//30;
+	angle = new_w->angle;
 	tmp_x = *x;
 	tmp_y = *y;
-	if (iso_p == 0)//Slanting right:
+	if (new_w->iso_p == 0)//Slanting right:
 	{
 		*x = (tmp_x + tmp_y) * cos(angle);
-		*y = (tmp_x - tmp_y) * sin(angle) - z;
+		*y = (tmp_x - tmp_y) * -sin(angle) - z;
 	}
-	else if (iso_p == 1)//Slanting left:
+	else if (new_w->iso_p == 1)//Slanting left:
 	{
 		*x = (tmp_x - tmp_y) * -cos(angle);
-		*y = ((tmp_x + tmp_y) * sin(angle)) - z;
+		*y = ((tmp_x + tmp_y) * -sin(angle)) - z;
 	}
-	else if (iso_p == 2)//Mirror image slanting right:
+	else if (new_w->iso_p == 2)//Mirror image slanting right:
 	{
 		*x = (tmp_x - tmp_y) * cos(angle);
-		*y = ((tmp_x + tmp_y) * sin(angle)) - z;
+		*y = ((tmp_x + tmp_y) * -sin(angle)) - z;
 	}
-	else if (iso_p == 3)//Mirror image slanting left:
+	else if (new_w->iso_p == 3)//Mirror image slanting left:
 	{
 		*x = (tmp_x + tmp_y) * -cos(angle);
-		*y = ((tmp_x - tmp_y) * sin(angle)) - z;
+		*y = ((tmp_x - tmp_y) * -sin(angle)) - z;
 	}
 	printf("\n-------fdf_rotate_xy end-------\n");
 }

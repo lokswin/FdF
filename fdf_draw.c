@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/19 19:09:47 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/19 20:53:00 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 	printf("\n-------fdf_dw_ln start--p1=%d; p2=%d\n", p1, p2);
 	x1 = all_ps[p2].x;
 	y1 = all_ps[p2].y;
-	fdf_rotate_xy(&x1, &y1, all_ps[p2].z, new_w.iso_p);
+	fdf_rotate_xy(&x1, &y1, all_ps[p2].z, &new_w);
 	dx = x1;
 	dy = y1;
 	x1 = all_ps[p1].x;
 	y1 = all_ps[p1].y;
-	fdf_rotate_xy(&x1, &y1, all_ps[p1].z, new_w.iso_p);
+	fdf_rotate_xy(&x1, &y1, all_ps[p1].z, &new_w);
 	dx = dx - x1;
 	dy = dy - y1;
 	if (fabs(dx) >= fabs(dy))
@@ -78,7 +78,7 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 		x1 = x1 + dx;
     	y1 = y1 + dy;
 	}
-	printf("-------fdf_dw_ln end-------x%d y%d\n", new_w.x_mid, new_w.y_mid);
+	printf("-------fdf_dw_ln end-------x%d y%d iso =%d \n", new_w.x_mid, new_w.y_mid, new_w.iso_p);
 	return (1);
 	
 }
@@ -98,18 +98,9 @@ int					fdf_draw(t_w *new_w)
 	i = 0;
 	mlx_key_hook(new_w->win_p, fdf_keys, new_w);
 	fdf_mv_find(new_w);
-	while (i < (new_w->p_nb - 1))
-	{
-		fdf_p_struct(new_w->point, i);
-		if (new_w->point[i].y == new_w->point[i + 1].y)
-			fdf_dw_ln(new_w->point, *new_w, i, i + 1);//horiz lines
-	 	if (((i + new_w->mv) > 0) && ((i + new_w->mv) < new_w->p_nb))
-			fdf_dw_ln(new_w->point, *new_w, i, i + new_w->mv);//vert lines
-		i++;
-	}
-
-	/**/
-	//mlx_put_image_to_window(new_w.mlx_p, new_w.win_p, new_w.img_p, 100, 100);
+	fdf_redraw(new_w);
+	/*
+	mlx_put_image_to_window(new_w->mlx_p, new_w->win_p, new_w->img_p, 100, 100);*/
 	mlx_loop(new_w->mlx_p);
 	printf("-------fdf_draw end-------\n");
 	return (0);

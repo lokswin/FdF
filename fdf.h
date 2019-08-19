@@ -59,6 +59,7 @@ typedef struct		s_w
 	int				iso_p;
 	int				p_nb;
 	int				mv;
+	double			angle;
 	t_crds			*point;
 	void			*mlx_p;
 	void			*win_p;
@@ -75,7 +76,7 @@ t_w					*fdf_ui(t_w *new_w, int first_time);
 
 void				fdf_p_struct(t_crds all_ps[260000], int p_nb);
 
-void				fdf_rotate_xy(double *x, double *y, double z, int dir);
+void				fdf_rotate_xy(double *x, double *y, double z, t_w *new_w);
 int					fdf_redraw(t_w *new_w);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/18 19:09:12 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/19 20:30:21 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int			fdf_keys(int key, void *param)
 ** **************************************************************************
 */
 
-t_w			*fdf_ui(t_w *new_w, int first_time)
+t_w				*fdf_ui(t_w *new_w, int first_time)
 {
 	size_t		n_len;
 
@@ -115,7 +115,7 @@ t_w			*fdf_ui(t_w *new_w, int first_time)
 		if (n_len <= (size_t)new_w->width)
 		{
 			fdf_ui_back(new_w);
-			mlx_string_put(new_w->mlx_p, new_w->win_p,  \
+			mlx_string_put(new_w->mlx_p, new_w->win_p, \
 			((new_w->width - n_len) / 2), 5, 0x2EE13F, new_w->f_name);
 		}
 	printf("\n-------fdf_ui end-------\n");
