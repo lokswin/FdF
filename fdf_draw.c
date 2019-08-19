@@ -6,11 +6,36 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/18 21:23:12 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/19 19:09:47 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+** **************************************************************************
+**	static void fdf_mv_find(t_w *new_w, int p_nb)
+**	Function to find next line point
+** **************************************************************************
+*/
+
+static void			fdf_mv_find(t_w *new_w)
+{
+	int			tmp;
+	int			i;
+
+	printf("-------fdf_find start-------\n");
+	tmp = 0;
+	i = 0;
+	while (i < (new_w->p_nb - 1))
+	{
+		if (new_w->point[i].x > tmp)
+			tmp = new_w->point[i].x;
+		i++;
+	}
+	new_w->mv = 1 + (tmp / new_w->map_ln);
+	printf("-------fdf_find end-------\n");
+}
 
 /*
 ** **************************************************************************
@@ -44,14 +69,16 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 		step = fabs(dy);
 	dx = dx / step;
 	dy = dy / step;
+	x1 += new_w.x_mid;
+	y1 += new_w.y_mid;
 	while(step--)
 	{
 		//printf("x1=%f, y1=%f, step=%d, dx=%f, dy=%f iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
-	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, 400+x1, 400+y1, new_w.color);
+	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, x1, y1, new_w.color);
 		x1 = x1 + dx;
     	y1 = y1 + dy;
 	}
-	printf("-------fdf_dw_ln end-------");
+	printf("-------fdf_dw_ln end-------x%d y%d\n", new_w.x_mid, new_w.y_mid);
 	return (1);
 	
 }
@@ -63,59 +90,29 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 ** **************************************************************************
 */
 
-int					fdf_draw(t_crds all_ps[260000], int p_nb, char *source_f)
+int					fdf_draw(t_w *new_w)
 {
-	t_w				new_w;
 	int				i;
 
 	printf("\n-------fdf_draw start-------\n");
 	i = 0;
-	fdf_new_win(&new_w, p_nb, source_f);
-	new_w.point = all_ps;
-	mlx_key_hook(new_w.win_p, fdf_keys, &new_w);
-	new_w.mv = fdf_find(all_ps, p_nb) + 1;
-	 while (i < (p_nb - 1))
+	mlx_key_hook(new_w->win_p, fdf_keys, new_w);
+	fdf_mv_find(new_w);
+	while (i < (new_w->p_nb - 1))
 	{
-		fdf_p_struct(all_ps, i);
-		if (new_w.point[i].y == new_w.point[i + 1].y)
-			fdf_dw_ln(all_ps, new_w, i, i + 1);//horiz lines
-	 	if (((i + new_w.mv) > 0) && ((i + new_w.mv) < p_nb))
-		{
-			
-			fdf_dw_ln(all_ps, new_w, i, i + new_w.mv);//vert lines
-		}
-		i++;
-	}/**/
-	//mlx_put_image_to_window(new_w.mlx_p, new_w.win_p, new_w.img_p, 100, 100);
-	mlx_loop(new_w.mlx_p);
-	printf("-------fdf_draw end-------\n");
-	return (0);
-}
-
-/*
-** **************************************************************************
-**	int fdf_find()
-**	Function to find next line point
-** **************************************************************************
-*/
-
-int				fdf_find(t_crds all_ps[260000], int p_nb)
-{
-	int			tmp;
-	int			i;
-
-	printf("-------fdf_find start-------\n");
-	tmp = all_ps[0].x;
-	i = 0;
-	while (i < (p_nb - 1))
-	{
-		if (all_ps[i].x > tmp)
-			tmp = all_ps[i].x;
+		fdf_p_struct(new_w->point, i);
+		if (new_w->point[i].y == new_w->point[i + 1].y)
+			fdf_dw_ln(new_w->point, *new_w, i, i + 1);//horiz lines
+	 	if (((i + new_w->mv) > 0) && ((i + new_w->mv) < new_w->p_nb))
+			fdf_dw_ln(new_w->point, *new_w, i, i + new_w->mv);//vert lines
 		i++;
 	}
-	tmp = tmp / 30;
-	printf("-------fdf_find end-------\n");
-	return (tmp);
+
+	/**/
+	//mlx_put_image_to_window(new_w.mlx_p, new_w.win_p, new_w.img_p, 100, 100);
+	mlx_loop(new_w->mlx_p);
+	printf("-------fdf_draw end-------\n");
+	return (0);
 }
 
 /*

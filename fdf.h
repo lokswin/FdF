@@ -45,8 +45,13 @@ typedef struct		s_w
 {
 	char			*f_name;
 	char			*img;
+	int				file_w;
+	int				file_h;
 	int				width;
 	int				height;
+	int				x_mid;
+	int				y_mid;
+	int				map_ln;
 	int				color;
 	int				ln_sz;
 	int				bitspp;
@@ -63,8 +68,7 @@ typedef struct		s_w
 void				fdf_new_win(t_w *new_w, int p_nb, char *source_f);
 
 int					fdf_dw_ln(t_crds *point, t_w new_w, int p1, int p2);
-int					fdf_draw(t_crds all_ps[260000], int p_nb, char *source_f);
-int					fdf_find(t_crds all_ps[260000], int p_nb);
+int					fdf_draw(t_w *new_w);
 
 int					fdf_keys(int key, void *param);
 t_w					*fdf_ui(t_w *new_w, int first_time);

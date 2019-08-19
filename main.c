@@ -6,11 +6,17 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/18 17:40:02 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/19 19:30:35 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static void			fdf_ln_sz(t_w *new_w, int *y)
+{
+	new_w->map_ln = 30;
+	new_w->file_h = *y;
+}
 
 /*
 ** **************************************************************************
@@ -22,7 +28,7 @@
 ** **************************************************************************
 */
 
-static int			file_to_arr(t_crds all_ps[260000], char *s, int p_nb, int y)
+static int			file_to_arr(t_w *new_w, char *s, int p_nb, int y)
 {
 	char			**buff_splt;
 	int				i;
@@ -36,11 +42,10 @@ static int			file_to_arr(t_crds all_ps[260000], char *s, int p_nb, int y)
 		x++;
 	while (i < x)
 	{	
-		all_ps[p_nb].next = &all_ps[p_nb + 1];
-		all_ps[p_nb].x = 30 * i;
-		all_ps[p_nb].y = 30 * y;
-		all_ps[p_nb].z = ft_atoi(buff_splt[i]);
-		//fdf_rotate_xy(&all_ps[p_nb].x, &all_ps[p_nb].y, all_ps[p_nb].z, 3);
+		new_w->point[p_nb].next = &new_w->point[p_nb + 1];
+		new_w->point[p_nb].x = new_w->map_ln * i;
+		new_w->point[p_nb].y = new_w->map_ln * y;
+		new_w->point[p_nb].z = new_w->map_ln * ft_atoi(buff_splt[i]);
 		p_nb++;
 		i++;
 	}
@@ -55,7 +60,7 @@ static int			file_to_arr(t_crds all_ps[260000], char *s, int p_nb, int y)
 ** **************************************************************************
 */
 
-static int		fdf_read(t_crds all_ps[260000], int fd)
+static int		fdf_read(int fd, t_w *new_w)
 {
 	char		*buff;
 	int			gnl_res;
@@ -66,23 +71,21 @@ static int		fdf_read(t_crds all_ps[260000], int fd)
 	p_nb = 0;
 	y = 0;
 	gnl_res = 1;
+	fdf_ln_sz(new_w, &y);
 	while (gnl_res)
 	{
-		if (!(buff = (char*)malloc(sizeof(char) * 260000)))
-		{
-			ft_putstr_fd("fdf_read malloc error", 2);
-			exit(1);
-		}
 		if ((gnl_res = ft_get_next_line(fd, &buff)) && (gnl_res == -1))
 		{
 			ft_putstr_fd("GNL read error", 2);
 			ft_strdel(&buff);
 			exit(1);
 		}
-		p_nb = file_to_arr(all_ps, buff, p_nb, y++);
+		p_nb = file_to_arr(new_w, buff, p_nb, y++);
+		if (new_w->file_w == 0)
+			new_w->file_w = ft_strlen(buff);
 		ft_strdel(&buff);
 	}
-	all_ps[p_nb - 1].next = NULL;
+	new_w->point[p_nb - 1].next = NULL;
 	printf("-------fdf_read end-------");
 	return (p_nb);
 }
@@ -118,6 +121,7 @@ static int		fdf_open(char *source_f)
 int				main(int argc, char **argv)
 {
 	t_crds		all_ps[260000];
+	t_w			new_w;
 	int			p_nb;
 	int			fd;
 
@@ -129,8 +133,10 @@ int				main(int argc, char **argv)
 		exit(1);
 	}
 	fd = fdf_open(argv[1]);
-	p_nb = fdf_read(all_ps, fd);
-	fdf_draw(all_ps, p_nb, argv[1]);
+	new_w.point = all_ps;
+	p_nb = fdf_read(fd, &new_w);
+	fdf_new_win(&new_w, p_nb, argv[1]);
+	fdf_draw(&new_w);
 	close(fd);
 	exit(0);
 }
