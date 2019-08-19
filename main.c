@@ -6,30 +6,11 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 19:59:15 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/18 17:40:02 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-/*
-** **************************************************************************
-**	void delay(int number_of_seconds)
-**	Function to create time delay
-** NOT USED
-** **************************************************************************
-*/
-
-void			delay(int number_of_seconds)
-{
-	// Converting time into milli_seconds
-	int milli_seconds = 1000 * number_of_seconds;
-	// Stroing start time
-	clock_t start_time = clock();
-	// looping till required time is not acheived
-	while (clock() < start_time + milli_seconds)
-		;
-}
 
 /*
 ** **************************************************************************
@@ -41,7 +22,7 @@ void			delay(int number_of_seconds)
 ** **************************************************************************
 */
 
-static int			file_to_arr(t_crds all_ps[512], char *s, int p_nb, int y)
+static int			file_to_arr(t_crds all_ps[260000], char *s, int p_nb, int y)
 {
 	char			**buff_splt;
 	int				i;
@@ -69,12 +50,12 @@ static int			file_to_arr(t_crds all_ps[512], char *s, int p_nb, int y)
 
 /*
 ** **************************************************************************
-**	static int fdf_read(t_crds all_ps[512], int fd)
+**	static int fdf_read(t_crds all_ps[260000], int fd)
 **	Function to read files
 ** **************************************************************************
 */
 
-static int		fdf_read(t_crds all_ps[512], int fd)
+static int		fdf_read(t_crds all_ps[260000], int fd)
 {
 	char		*buff;
 	int			gnl_res;
@@ -87,7 +68,7 @@ static int		fdf_read(t_crds all_ps[512], int fd)
 	gnl_res = 1;
 	while (gnl_res)
 	{
-		if (!(buff = (char*)malloc(sizeof(char) * 512)))
+		if (!(buff = (char*)malloc(sizeof(char) * 260000)))
 		{
 			ft_putstr_fd("fdf_read malloc error", 2);
 			exit(1);
@@ -136,7 +117,7 @@ static int		fdf_open(char *source_f)
 
 int				main(int argc, char **argv)
 {
-	t_crds		all_ps[512];
+	t_crds		all_ps[260000];
 	int			p_nb;
 	int			fd;
 

@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 18:00:35 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/18 19:57:42 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 /*
 ** **************************************************************************
-**	void fdf_p_struct(t_crds all_ps[512], int p_nb)
+**	void fdf_p_struct(t_crds all_ps[260000], int p_nb)
 **	Function to print one structure node
 **
 ** **************************************************************************
 */
 
-void		fdf_p_struct(t_crds all_ps[512], int p_nb)
+void		fdf_p_struct(t_crds all_ps[260000], int p_nb)
 {
 	int		i;
 	int		j;

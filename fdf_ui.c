@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/16 16:38:02 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/18 19:09:12 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int			fdf_keys(int key, void *param)
 	t_w		*new_w;
 
 	new_w = (t_w *)param;
-	//ft_putnbr(key);
 	if ((key >= 123) && (key <= 126))
 	{
 		new_w->iso_p = key - 123;
