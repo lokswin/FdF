@@ -6,16 +6,16 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/19 20:58:34 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/22 17:43:43 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void			fdf_ln_sz(t_w *new_w, int *y)
+static void			fdf_ln_sz(t_w *new_w)
 {
-	new_w->map_ln = 20;
-	new_w->file_h = *y;
+	new_w->map_ln = 15;
+	new_w->file_l = 0;
 }
 
 /*
@@ -46,6 +46,8 @@ static int			file_to_arr(t_w *new_w, char *s, int p_nb, int y)
 		new_w->point[p_nb].x = new_w->map_ln * i;
 		new_w->point[p_nb].y = new_w->map_ln * y;
 		new_w->point[p_nb].z = new_w->map_ln * ft_atoi(buff_splt[i]);
+		if (new_w->point[p_nb].z > new_w->file_l)
+			new_w->file_l = new_w->point[p_nb].z;
 		p_nb++;
 		i++;
 	}
@@ -71,7 +73,7 @@ static int		fdf_read(int fd, t_w *new_w)
 	p_nb = 0;
 	y = 0;
 	gnl_res = 1;
-	fdf_ln_sz(new_w, &y);
+	fdf_ln_sz(new_w);
 	while (gnl_res)
 	{
 		if ((gnl_res = ft_get_next_line(fd, &buff)) && (gnl_res == -1))
@@ -85,6 +87,7 @@ static int		fdf_read(int fd, t_w *new_w)
 			new_w->file_w = ft_strlen(buff);
 		ft_strdel(&buff);
 	}
+	new_w->file_h = y;
 	new_w->point[p_nb - 1].next = NULL;
 	printf("-------fdf_read end-------");
 	return (p_nb);

@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/19 21:15:01 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/22 21:15:25 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void		fdf_rotate_xy(double *x, double *y, double z, t_w *new_w)
 	double	tmp_y;
 
 	printf("\n-------fdf_rotate_xy start-------\n");
-	//angle = 0.523599;//0.46373398;//0.523599;//30;
 	angle = new_w->angle;
 	tmp_x = *x;
 	tmp_y = *y;
@@ -39,17 +38,28 @@ void		fdf_rotate_xy(double *x, double *y, double z, t_w *new_w)
 	{
 		*x = (tmp_x - tmp_y) * -cos(angle);
 		*y = ((tmp_x + tmp_y) * -sin(angle)) - z;
+		new_w->x_mid = (new_w->x_mid + new_w->y_mid) * cos(angle);
+		new_w->y_mid = (new_w->x_mid - new_w->y_mid) * cos(angle);
+		//new_w->y_mid = new_w->y_mid * 1.125;
+		//new_w->x_mid = new_w->x_mid * 1.45;
 	}
 	else if (new_w->iso_p == 2)//Mirror image slanting right:
 	{
 		*x = (tmp_x - tmp_y) * cos(angle);
 		*y = ((tmp_x + tmp_y) * -sin(angle)) - z;
+		new_w->x_mid = (new_w->x_mid + new_w->y_mid) * cos(angle);
+		new_w->y_mid = (new_w->x_mid - new_w->y_mid) * cos(angle);
+		//new_w->y_mid *= 1.125;
+		//new_w->x_mid *= 1.25;
 	}
 	else if (new_w->iso_p == 3)//Mirror image slanting left:
 	{
 		*x = (tmp_x + tmp_y) * -cos(angle);
 		*y = ((tmp_x - tmp_y) * -sin(angle)) - z;
+		new_w->x_mid = (new_w->x_mid + new_w->y_mid) * cos(angle);
+		//new_w->x_mid *= 1.6;
 	}
+
 	printf("\n-------fdf_rotate_xy end-------\n");
 }
 
@@ -67,13 +77,7 @@ int			fdf_redraw(t_w *new_w)
 	printf("\n-------fdf_redraw start-------\n");
 	i = 0;
 	mlx_clear_window(new_w->mlx_p, new_w->win_p);
-	mlx_destroy_image(new_w->mlx_p, new_w->img_p);
-	new_w->img_p = NULL;
-	new_w->img = NULL;
 	fdf_ui(new_w, 0);
-	new_w->img_p = mlx_new_image(new_w->mlx_p, 1300, 1300);
-	new_w->img = mlx_get_data_addr(new_w->img_p, \
-	&new_w->bitspp, &new_w->ln_sz, &new_w->endi);
 	while (i < (new_w->p_nb - 1))
 	{
 		fdf_p_struct(new_w->point, i);
@@ -83,7 +87,6 @@ int			fdf_redraw(t_w *new_w)
 			fdf_dw_ln(new_w->point, *new_w, i, i + new_w->mv);//vert lines
 		i++;
 	}
-	//mlx_put_image_to_window(new_w->mlx_p, new_w->win_p, new_w->img_p, 100, 100);
 	printf("\n-------fdf_redraw end-------\n");
 	return (1);
 }

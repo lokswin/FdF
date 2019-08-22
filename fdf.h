@@ -44,18 +44,14 @@ typedef struct		s_crds
 typedef struct		s_w
 {
 	char			*f_name;
-	char			*img;
 	int				file_w;
 	int				file_h;
+	int				file_l;
 	int				width;
 	int				height;
 	int				x_mid;
 	int				y_mid;
 	int				map_ln;
-	int				color;
-	int				ln_sz;
-	int				bitspp;
-	int				endi;
 	int				iso_p;
 	int				p_nb;
 	int				mv;
@@ -63,7 +59,6 @@ typedef struct		s_w
 	t_crds			*point;
 	void			*mlx_p;
 	void			*win_p;
-	void			*img_p;
 }					t_w;
 
 void				fdf_new_win(t_w *new_w, int p_nb, char *source_f);

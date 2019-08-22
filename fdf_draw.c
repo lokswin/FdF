@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/19 20:53:00 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/22 20:15:49 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,14 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 	while(step--)
 	{
 		//printf("x1=%f, y1=%f, step=%d, dx=%f, dy=%f iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
-	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, x1, y1, new_w.color);
+	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, x1, y1, 0xFFFFFF);
 		x1 = x1 + dx;
     	y1 = y1 + dy;
 	}
-	printf("-------fdf_dw_ln end-------x%d y%d iso =%d \n", new_w.x_mid, new_w.y_mid, new_w.iso_p);
+	printf("-------fdf_dw_ln end-------width%d height%d xm%d ym%d iso =%d \
+	file_w%d file_h%d file_l%d map_ln%d\n", new_w.width, \
+	new_w.height, new_w.x_mid, new_w.y_mid, new_w.iso_p, new_w.file_w, new_w.file_h, new_w.file_l, new_w.map_ln);
 	return (1);
-	
 }
 
 /*
@@ -99,8 +100,6 @@ int					fdf_draw(t_w *new_w)
 	mlx_key_hook(new_w->win_p, fdf_keys, new_w);
 	fdf_mv_find(new_w);
 	fdf_redraw(new_w);
-	/*
-	mlx_put_image_to_window(new_w->mlx_p, new_w->win_p, new_w->img_p, 100, 100);*/
 	mlx_loop(new_w->mlx_p);
 	printf("-------fdf_draw end-------\n");
 	return (0);
