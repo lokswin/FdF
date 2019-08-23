@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/22 21:25:45 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/23 18:38:00 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,22 @@ static void		fdf_w_layout(t_w *new_w)
 {
 	int			w;
 	int			h;
+	int			max;
 
+	printf("\n-------fdf_w_layout start-------\n");
 	w = new_w->map_ln * new_w->file_w;
 	h = new_w->map_ln * new_w->file_h;
-	if ((new_w->width = w + 80) % 2)
+	max = fmax(w, h);
+	if ((new_w->width = max + 80) % 2)
 		new_w->width += 1;
 	if (new_w->width > 2500)
 		new_w->width = 2500;
-	new_w->height =	h + new_w->file_l + 50;
+	new_w->height =	(2 * h) + new_w->file_l + 50;
 	if (new_w->height > 1300)
 		new_w->height = 1300;
 	new_w->x_mid = new_w->width / 4;
 	new_w->y_mid = new_w->height - (h / 2);
-	
-	
+	printf("-------fdf_w_layout end-------\n");
 }
 
 /*

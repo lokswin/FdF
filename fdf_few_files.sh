@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    few_files.sh                                       :+:      :+:    :+:    #
+#    fdf_few_files.sh                                   :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: drafe <drafe@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/24 18:27:21 by drafe             #+#    #+#              #
-#    Updated: 2019/07/26 18:17:08 by drafe            ###   ########.fr        #
+#    Updated: 2019/08/23 18:16:39 by drafe            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,11 @@
 #    n=`expr "$n" + 1`;
 #done
 echo "\n  \n...................................\n"
-echo "          Start valid tests:";
+echo "          Start valid FdF tests:";
 n=0;
 max=21;
 while [ "$n" -le "$max" ]; do
     find maps/ -name '*.fdf' -exec ./fdf {} \;
-    
     n=`expr "$n" + 1`;
 done
 
@@ -40,6 +39,6 @@ done
 #    time ./fillit ./tests/rand_tests/rand_test_$n | tee -a ./tests/rand_tests/rand_out;
 #    n=`expr "$n" + 1`;
 #done
-echo "\n  !!!Scrtipt:few_files.sh DONE!!!"
+echo "\n  !!!Scrtipt:fdf_few_files.sh DONE!!!"
 #//printf ("\ni=%d, off_s(-)=%d", i , off_s);
 #//printf (" off_s(+)=%d", off_s);

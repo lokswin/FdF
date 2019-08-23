@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/22 17:43:43 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/23 18:43:47 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 static void			fdf_ln_sz(t_w *new_w)
 {
-	new_w->map_ln = 15;
+	if (new_w->file_w > 200)
+		new_w->map_ln = 3;
+	else if (new_w->file_w > 100)
+		new_w->map_ln = 6;
+	else
+		new_w->map_ln = 15;
 	new_w->file_l = 0;
 }
 
@@ -73,7 +78,6 @@ static int		fdf_read(int fd, t_w *new_w)
 	p_nb = 0;
 	y = 0;
 	gnl_res = 1;
-	fdf_ln_sz(new_w);
 	while (gnl_res)
 	{
 		if ((gnl_res = ft_get_next_line(fd, &buff)) && (gnl_res == -1))
@@ -82,9 +86,13 @@ static int		fdf_read(int fd, t_w *new_w)
 			ft_strdel(&buff);
 			exit(1);
 		}
-		p_nb = file_to_arr(new_w, buff, p_nb, y++);
 		if (new_w->file_w == 0)
+		{
 			new_w->file_w = ft_strlen(buff);
+			fdf_ln_sz(new_w);
+		}
+		p_nb = file_to_arr(new_w, buff, p_nb, y++);
+		
 		ft_strdel(&buff);
 	}
 	new_w->file_h = y;

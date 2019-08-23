@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/22 20:13:11 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/23 18:26:13 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,18 @@ static void		fdf_ui_back(t_w *new_w)
 
 static size_t		fdf_name_len(t_w *new_w)
 {
-	size_t			name_len;
+	size_t			res;
 	size_t			new_len;
-	char			*tmp;
 
-	tmp = NULL;
 	new_len = (new_w->width / 10) - 13;
-	name_len = (ft_strlen(new_w->f_name) + 5) * 10;
-	if ((name_len > (size_t)new_w->width) && (new_w->width > 80) && (new_len > 0))
+	res = (ft_strlen(new_w->f_name) + 5) * 10;
+	if ((res > (size_t)new_w->width) && (new_w->width > 80) && (new_len > 0))
 	{
 		new_w->f_name = ft_strsub(new_w->f_name, 0, new_len);
 		new_w->f_name = ft_strcat(new_w->f_name, "...");
-		name_len = (ft_strlen(new_w->f_name) + 5) * 10;
+		res = (ft_strlen(new_w->f_name) + 5) * 10;
 	}
-	return (name_len);
+	return (res);
 }
 
 /*
