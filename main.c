@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/23 18:43:47 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/23 21:29:22 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 static void			fdf_ln_sz(t_w *new_w)
 {
-	if (new_w->file_w > 200)
-		new_w->map_ln = 3;
-	else if (new_w->file_w > 100)
+	if (new_w->file_w > 450)
+		new_w->map_ln = 4;
+	else if (new_w->file_w > 250)
 		new_w->map_ln = 6;
+	else if (new_w->file_w > 100)
+		new_w->map_ln = 8;
 	else
 		new_w->map_ln = 15;
 	new_w->file_l = 0;
@@ -47,12 +49,12 @@ static int			file_to_arr(t_w *new_w, char *s, int p_nb, int y)
 		x++;
 	while (i < x)
 	{	
-		new_w->point[p_nb].next = &new_w->point[p_nb + 1];
-		new_w->point[p_nb].x = new_w->map_ln * i;
-		new_w->point[p_nb].y = new_w->map_ln * y;
-		new_w->point[p_nb].z = new_w->map_ln * ft_atoi(buff_splt[i]);
-		if (new_w->point[p_nb].z > new_w->file_l)
-			new_w->file_l = new_w->point[p_nb].z;
+		new_w->p[p_nb].next = &new_w->p[p_nb + 1];
+		new_w->p[p_nb].x = new_w->map_ln * i;
+		new_w->p[p_nb].y = new_w->map_ln * y;
+		new_w->p[p_nb].z = new_w->map_ln * ft_atoi(buff_splt[i]);
+		if (new_w->p[p_nb].z > new_w->file_l)
+			new_w->file_l = new_w->p[p_nb].z;
 		p_nb++;
 		i++;
 	}
@@ -96,7 +98,7 @@ static int		fdf_read(int fd, t_w *new_w)
 		ft_strdel(&buff);
 	}
 	new_w->file_h = y;
-	new_w->point[p_nb - 1].next = NULL;
+	new_w->p[p_nb - 1].next = NULL;
 	printf("-------fdf_read end-------");
 	return (p_nb);
 }
@@ -144,7 +146,7 @@ int				main(int argc, char **argv)
 		exit(1);
 	}
 	fd = fdf_open(argv[1]);
-	new_w.point = all_ps;
+	new_w.p = all_ps;
 	p_nb = fdf_read(fd, &new_w);
 	fdf_new_win(&new_w, p_nb, argv[1]);
 	fdf_draw(&new_w);

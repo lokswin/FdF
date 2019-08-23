@@ -56,7 +56,7 @@ typedef struct		s_w
 	int				p_nb;
 	int				mv;
 	double			angle;
-	t_crds			*point;
+	t_crds			*p;
 	void			*mlx_p;
 	void			*win_p;
 }					t_w;
@@ -64,6 +64,7 @@ typedef struct		s_w
 void				fdf_new_win(t_w *new_w, int p_nb, char *source_f);
 
 int					fdf_dw_ln(t_crds *point, t_w new_w, int p1, int p2);
+int					fdf_dw_ln2(t_crds *point, t_w new_w, int p1, int p2);
 int					fdf_draw(t_w *new_w);
 
 int					fdf_keys(int key, void *param);
@@ -73,5 +74,6 @@ void				fdf_p_struct(t_crds all_ps[260000], int p_nb);
 
 void				fdf_rotate_xy(double *x, double *y, double z, t_w *new_w);
 int					fdf_redraw(t_w *new_w);
+void				fdf_speed_up(t_w *new_w, int parts);
 
 #endif

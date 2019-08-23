@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/23 18:41:32 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/23 21:24:13 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 ** **************************************************************************
 **	static void fdf_mv_find(t_w *new_w, int p_nb)
-**	Function to find next line point
+**	Function to find next line p(point)
 ** **************************************************************************
 */
 
@@ -29,8 +29,8 @@ static void			fdf_mv_find(t_w *new_w)
 	i = 0;
 	while (i < (new_w->p_nb - 1))
 	{
-		if (new_w->point[i].x > tmp)
-			tmp = new_w->point[i].x;
+		if (new_w->p[i].x > tmp)
+			tmp = new_w->p[i].x;
 		i++;
 	}
 	new_w->mv = 1 + (tmp / new_w->map_ln);
@@ -39,7 +39,7 @@ static void			fdf_mv_find(t_w *new_w)
 
 /*
 ** **************************************************************************
-**	void fdf_dw_ln(t_crds *point, t_w new_w, int p1, int p2)
+**	void fdf_dw_ln(t_crds *p, t_w new_w, int p1, int p2)
 **	Function to draw one line betwen p1 and p2
 ** **************************************************************************
 */
@@ -50,7 +50,7 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 	double	y1;
 	double	dx;
 	double	dy;
-	int		step;
+	int	step;
 
 	printf("\n-------fdf_dw_ln start--p1=%d; p2=%d\n", p1, p2);
 	x1 = all_ps[p2].x;
@@ -73,7 +73,7 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 	y1 += new_w.y_mid;
 	while(step--)
 	{
-		//printf("x1=%f, y1=%f, step=%d, dx=%f, dy=%f iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
+		//printf("x1=%f, y1=%f, step=%f, dx=%f, dy=%f iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
 	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, x1, y1, 0xFFFFFF);
 		x1 = x1 + dx;
     	y1 = y1 + dy;
