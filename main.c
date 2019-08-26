@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/23 21:29:22 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/26 21:24:51 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,14 +140,23 @@ int				main(int argc, char **argv)
 
 	fd = 0;
 	p_nb = 0;
+	//all_ps = (t_crds*)malloc(sizeof(t_crds));
 	if (argc != 2 || (argv[1] == NULL))
 	{
 		ft_putstr("usage: ./fdf source_file\n");
 		exit(1);
 	}
+	ft_putstr("\n\t*** FdF by nshelly & drafe ***\n\n Man:\n\
+	\t< > v ^ : Rotation\n\t\tW A S D : Move\n\t\t+ - : Altitude\n\
+	\tC : Color\n\t\tESC - Quit\n");
 	fd = fdf_open(argv[1]);
 	new_w.p = all_ps;
 	p_nb = fdf_read(fd, &new_w);
+	//while(i < new_w.p_nb)
+	//{
+	///	fdf_p_struct(new_w.p, i);
+	//	i++;
+	//}
 	fdf_new_win(&new_w, p_nb, argv[1]);
 	fdf_draw(&new_w);
 	close(fd);
