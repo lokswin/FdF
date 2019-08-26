@@ -6,11 +6,30 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/23 18:26:13 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/26 21:22:57 by drafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+** **************************************************************************
+**	static void fdf_ui_man(t_w *new_w)
+**	Function draw instructions
+** **************************************************************************
+*/
+
+static void		fdf_ui_man(t_w *new_w)
+{
+	mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 45, 0xFFFFFF, "< > v ^ : Rotation");
+	mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 65, 0xFFFFFF, "c : Color");
+	mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 85, 0xFFFFFF, "W A S D : Move");
+	mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 105, 0xFFFFFF, "+ - : Altitude");
+}
 
 /*
 ** **************************************************************************
@@ -37,6 +56,7 @@ static void		fdf_ui_back(t_w *new_w)
 		}
 		i++;
 	}
+	fdf_ui_man(new_w);
 }
 
 /*
