@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../././libft/libft.h
+string.h
+-
+stdlib.h
+-
+fcntl.h
+-
+unistd.h
+-
+
+.././fdf.h
+./libft/libft.h
+../././libft/libft.h
+mlx.h
+.././mlx.h
+stdio.h
+-
+math.h
+-
+time.h
+-
+
+/Users/nshelly/CLionProjects/fdf_new/src/fdf_reform.c
+fdf.h
+/Users/nshelly/CLionProjects/fdf_new/src/fdf.h
+
