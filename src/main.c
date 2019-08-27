@@ -12,10 +12,17 @@
 
 #include "fdf.h"
 
-static void			fdf_ln_sz(t_w *new_w, int *y)
+static void			fdf_ln_sz(t_w *new_w)
 {
-	new_w->map_ln = 20;
-	new_w->file_h = *y;
+    if (new_w->file_w > 450)
+        new_w->map_ln = 4;
+    else if (new_w->file_w > 250)
+        new_w->map_ln = 6;
+    else if (new_w->file_w > 100)
+        new_w->map_ln = 8;
+    else
+        new_w->map_ln = 15;
+    //new_w->file_l = 0;
 }
 
 /*
@@ -28,7 +35,7 @@ static void			fdf_ln_sz(t_w *new_w, int *y)
 ** **************************************************************************
 */
 
-static int			file_to_arr(t_w *new_w, char *s, int p_nb, int y)
+static void			file_to_arr(t_w *new_w, char *s, int y)
 {
 	char			**buff_splt;
 	int				i;
@@ -41,13 +48,15 @@ static int			file_to_arr(t_w *new_w, char *s, int p_nb, int y)
 		x++;
 	while (i < x)
 	{
-		new_w->point[p_nb].x = new_w->map_ln * i;
-		new_w->point[p_nb].y = new_w->map_ln * y;
-		new_w->point[p_nb].z = new_w->map_ln * ft_atoi(buff_splt[i]);
-		p_nb++;
+		new_w->p[new_w->p_nb].x = new_w->map_ln * i;
+		new_w->p[new_w->p_nb].y = new_w->map_ln * y;
+		new_w->p[new_w->p_nb].z = new_w->map_ln * ft_atoi(buff_splt[i]);
+        //new_w->p[new_w->p_nb].color =
+        //if (new_w->p[p_nb].z > new_w->file_l)
+        //    new_w->file_l = new_w->p[p_nb].z;
+        new_w->p_nb++;
 		i++;
 	}
-	return (p_nb);
 }
 
 /*
@@ -57,17 +66,16 @@ static int			file_to_arr(t_w *new_w, char *s, int p_nb, int y)
 ** **************************************************************************
 */
 
-static int		fdf_read(int fd, t_w *new_w)
+static void		fdf_read(int fd, t_w *new_w)
 {
 	char		*buff;
 	int			gnl_res;
 	int			y;
-	int			p_nb;
 
-	p_nb = 0;
+    new_w->p_nb = 0;
+    new_w->file_w = 0;
 	y = 0;
 	gnl_res = 1;
-	fdf_ln_sz(new_w, &y);
 	while (gnl_res)
 	{
 		if ((gnl_res = ft_get_next_line(fd, &buff)) && (gnl_res == -1))
@@ -76,12 +84,17 @@ static int		fdf_read(int fd, t_w *new_w)
 			ft_strdel(&buff);
 			exit(1);
 		}
-		p_nb = file_to_arr(new_w, buff, p_nb, y++);
+        if (new_w->file_w == 0)
+        {
+            new_w->file_w = ft_strlen(buff);
+            fdf_ln_sz(new_w);
+        }
+        file_to_arr(new_w, buff, y++);
 		if (new_w->file_w == 0)
 			new_w->file_w = ft_strlen(buff);
 		ft_strdel(&buff);
 	}
-	return (p_nb);
+    new_w->file_h = y;
 }
 
 /*
@@ -123,10 +136,11 @@ int				main(int argc, char **argv)
 		exit(1);
 	}
 	//fd = fdf_open(argv[1]);
-    fd = fdf_open("maps/42.fdf");
-	new_w.point = all_ps;
-	p_nb = fdf_read(fd, &new_w);
-	fdf_new_win(&new_w, p_nb, argv[1]);
+    fd = fdf_open("maps/elem.fdf");
+	new_w.p = all_ps;
+    new_w.f_name = argv[1];
+	fdf_read(fd, &new_w);
+	fdf_new_win(&new_w);
 	fdf_draw(&new_w);
 	close(fd);
 	exit(0);

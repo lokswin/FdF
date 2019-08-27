@@ -14,6 +14,34 @@
 
 /*
 ** **************************************************************************
+**	static void fdf_ui_man(t_w *new_w)
+**	Function draw instructions
+** **************************************************************************
+*/
+
+static void		fdf_ui_man(t_w *new_w)
+{
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 45, 0x00FF00, "***FdF by nshelly & drafe ***");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 65, 0xFFFFFF, "    < > v ^ : Rotation");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 85, 0xFFFFFF, "    c       : Color");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 105, 0xFFFFFF, "    W A S D : Move");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 125, 0xFFFFFF, "    + -     : Altitude");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 145, 0xFFFFFF, "    ESC     : Quit");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 165, 0xFFFFFF, "    SPACE   : Reset");
+    ft_putstr("\n\t*** FdF by nshelly & drafe ***\n\n Man:\n\
+	\t< > v ^ : Rotation\n\t\tW A S D\t: Move\n\t\t+ -     : Altitude\n\
+	\tc       : Color\n\t\tESC     : Quit\n\t\tSPACE   : Reset");
+}
+
+/*
+** **************************************************************************
 **    static void fdf_ui_back(t_w new_w)
 **    Function draw background of FdF header
 ** **************************************************************************
@@ -37,6 +65,7 @@ static void		fdf_ui_back(t_w *new_w)
 		}
 		i++;
 	}
+    fdf_ui_man(new_w);
 }
 
 /*
@@ -115,6 +144,22 @@ int			fdf_keys(int key, void *param)
     {
         new_w->mv_y = new_w->mv_y + 5;
         new_w->mv_x = new_w->mv_x - 5;
+        fdf_redraw(new_w);
+    }
+    if (key == 49)//Space
+    {
+        new_w->mv_x = 0;
+        new_w->mv_y = 0;
+        new_w->mv_z = 0;
+        new_w->iso_p = 0;
+        new_w->angle = 26.4;//0.46373398 ;
+        new_w->max_color = 0xFFFFFF;
+        new_w->min_color = 0xFFFFFF;
+        fdf_redraw(new_w);
+    }
+    if (key == 8)//c
+    {
+        fdf_color_change(new_w);
         fdf_redraw(new_w);
     }
 	if (key == 53)

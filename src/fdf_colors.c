@@ -12,37 +12,21 @@
 
 #include "fdf.h"
 
-double		get_line_pnt(double start, double end, double current)
-{
-    if (current == start)
-        return (0.0);
-    if (current == end)
-        return (1.0);
-    if (start == end)
-        return (0.0);
-    return ((current - start) / (end - start));
-}
-
-
-t_maxmin    max_min(t_crds all_sp[260000], int p_nb)
+void    max_min(t_w *new_w)
 {
     int i;
-    t_maxmin minmax;
 
     i = 0;
-    minmax.max_z =0;
-    minmax.min_z =0;
-    minmax.max_color = 0xFF0000;
-    minmax.min_color = 0x0000FF;
-    while(i < p_nb - 1)
+    new_w->max_z = 0;
+    new_w->min_z = 0;
+    while(i < new_w->p_nb - 2)
     {
-        if (all_sp[i].z > all_sp[i+1].z)
-            minmax.max_z = all_sp[i].z;
-        if (all_sp[i].z < all_sp[i+1].z)
-            minmax.min_z = all_sp[i].z;
+        if (new_w->p[i].z > new_w->p[i+1].z)
+            new_w->max_z = new_w->p[i].z;
+        if (new_w->p[i].z < new_w->p[i+1].z)
+            new_w->min_z = new_w->p[i].z;
         i++;
     }
-    return(minmax);
 }
 
 static double		ft_lint(double start, double end, double decimal_percent)
@@ -50,7 +34,6 @@ static double		ft_lint(double start, double end, double decimal_percent)
     if (start == end)
         return (start);
     return (start * (1.0 - decimal_percent) + (end * decimal_percent));
-    //return (start + decimal_percent * (end - start));
 }
 
 /*
@@ -84,29 +67,29 @@ int			color_lint(int c1, int c2, double decimal_percent)
     return (r << 16 | g << 8 | b);
 }
 
-static int calc_point_color(t_maxmin climits, int z)
+static int calc_point_color(t_w *new_w, int i)
 {
     int color;
     double divisor;
     double dec_pcnt;
 
-    divisor = climits.max_z - climits.min_z;
+    divisor = new_w->max_z - new_w->min_z;
     if(divisor != 0)
-        dec_pcnt  = (z - climits.min_z) / divisor;
+        dec_pcnt  = (new_w->p[i].z - new_w->min_z) / divisor;
     else
         dec_pcnt = 0.0;
-    color = color_lint(climits.min_color, climits.max_color, dec_pcnt);
+    color = color_lint(new_w->min_color, new_w->max_color, dec_pcnt);
     return (color);
 }
 
-void    set_colors(t_maxmin min_max, t_crds all_ps[260000], int p_nb)
+void    set_colors(t_w *new_w)
 {
     int i;
 
     i = 0;
-    while(i < p_nb)
+    while(i < new_w->p_nb)
     {
-        all_ps[i].color = calc_point_color(min_max, all_ps[i].z);
+        new_w->p[i].color = calc_point_color(new_w, i);
         i++;
     }
 }

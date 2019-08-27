@@ -14,8 +14,26 @@
 
 static void		fdf_xy_mid(t_w *new_w)
 {
-	new_w->x_mid = ((new_w->width) - (new_w->file_w * (new_w->map_ln / 2))) / 2;
-	new_w->y_mid = 150 + ((new_w->height)) / 2;
+    int			w;
+    int			h;
+    int			max;
+
+    printf("\n-------fdf_w_layout start-------\n");
+    w = new_w->map_ln * new_w->file_w;
+    h = new_w->map_ln * new_w->file_h;
+    max = fmax(w, h);
+    //if ((new_w->width = max + 80) % 2)
+   //     new_w->width += 1;
+    //if (new_w->width > 2500)
+        new_w->width = 2500;
+   // new_w->height =	(2 * h) + new_w->file_l + 50;
+   // if (new_w->height > 1300)
+        new_w->height = 1300;
+    new_w->x_mid = 800;//new_w->width / 4;
+    new_w->y_mid = 800;//new_w->height - (h / 2);
+
+	//new_w->x_mid = ((new_w->width) - (new_w->file_w * (new_w->map_ln / 2))) / 2;
+	//new_w->y_mid = 150 + ((new_w->height)) / 2;
 }
 
 /*
@@ -25,33 +43,28 @@ static void		fdf_xy_mid(t_w *new_w)
 ** **************************************************************************
 */
 
-void		fdf_new_win(t_w *new_w, int p_nb, char *source_f)
+void		fdf_new_win(t_w *new_w)
 {
-	new_w->f_name = source_f;
-	new_w->mv_x = 0;
+
+    new_w->mv_x = 0;
     new_w->mv_y = 0;
     new_w->mv_z = 0;
-	new_w->width = 600;
-	new_w->height = 600;
-	new_w->iso_p = 0;
-	new_w->angle = 26.4;//0.523599;
-	new_w->p_nb = p_nb;
+    new_w->iso_p = 0;
+    new_w->angle = 26.4;//0.46373398 ;
+    new_w->max_color = 0xFFFFFF;
+    new_w->min_color = 0xFFFFFF;
 	fdf_xy_mid(new_w);
 	if (!(new_w->mlx_p = mlx_init()))  
 	{
 		ft_putstr_fd("mlx error", 2);
 		exit (1);
 	}
-	new_w->color = mlx_get_color_value(new_w->mlx_p, 0xFFFFFF);
-	new_w->img_p = mlx_new_image(new_w->mlx_p, 1300, 1300);
 	new_w->win_p = fdf_ui(new_w, 1);
-	if (!new_w->mlx_p || !new_w->win_p || !new_w->img_p)
+	if (!new_w->mlx_p || !new_w->win_p)
 	{
 		ft_putstr_fd("mlx error", 2);
 		exit(1);
 	}
-	new_w->img = mlx_get_data_addr(new_w->img_p, \
-	&new_w->bitspp, &new_w->ln_sz, &new_w->endi);
 }
 
 /*
