@@ -14,26 +14,10 @@
 
 static void		fdf_xy_mid(t_w *new_w)
 {
-    int			w;
-    int			h;
-    int			max;
-
-    printf("\n-------fdf_w_layout start-------\n");
-    w = new_w->map_ln * new_w->file_w;
-    h = new_w->map_ln * new_w->file_h;
-    max = fmax(w, h);
-    //if ((new_w->width = max + 80) % 2)
-   //     new_w->width += 1;
-    //if (new_w->width > 2500)
-        new_w->width = 2500;
-   // new_w->height =	(2 * h) + new_w->file_l + 50;
-   // if (new_w->height > 1300)
-        new_w->height = 1300;
-    new_w->x_mid = 800;//new_w->width / 4;
-    new_w->y_mid = 800;//new_w->height - (h / 2);
-
-	//new_w->x_mid = ((new_w->width) - (new_w->file_w * (new_w->map_ln / 2))) / 2;
-	//new_w->y_mid = 150 + ((new_w->height)) / 2;
+    new_w->width = 2500;
+    new_w->height = 1300;
+    new_w->x_mid = 800;
+    new_w->y_mid = 800;
 }
 
 /*
@@ -50,7 +34,7 @@ void		fdf_new_win(t_w *new_w)
     new_w->mv_y = 0;
     new_w->mv_z = 0;
     new_w->iso_p = 0;
-    new_w->angle = 26.4;//0.46373398 ;
+    new_w->angle = 26.4;
     new_w->max_color = 0xFFFFFF;
     new_w->min_color = 0xFFFFFF;
 	fdf_xy_mid(new_w);

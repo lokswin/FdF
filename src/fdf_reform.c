@@ -29,7 +29,6 @@ void		fdf_rotate_xy(double *x, double *y, double z, t_w *new_w)
 
 	tmp_z = 0;
 	pi = M_PI;
-	//angle = 0.523599;//0.46373398;//0.523599;//30;
 	angle = new_w->angle;
 	if ((z != 0))
         tmp_z = z + new_w->mv_z;
@@ -37,7 +36,6 @@ void		fdf_rotate_xy(double *x, double *y, double z, t_w *new_w)
 	tmp_y = *y + new_w->mv_y;
 	if (new_w->iso_p == 0)//<- Slanting right:
 	{
-	    //angle = angle + 80;
 		*x = ((tmp_x + tmp_y) * cos(angle * (pi / 180)));
 		*y = ((tmp_x - tmp_y) * -sin(angle * (pi / 180))) - tmp_z;
 	}
@@ -45,21 +43,16 @@ void		fdf_rotate_xy(double *x, double *y, double z, t_w *new_w)
 	{
 		*x = (tmp_x - tmp_y) * -cos(angle * (pi / 180));//-
 		*y = ((tmp_x + tmp_y) * -sin(angle * (pi / 180))) - tmp_z;
-		//new_w->x_mid = (new_w->x_mid + new_w->y_mid) * cos(angle);
-        //		new_w->y_mid = (new_w->x_mid - new_w->y_mid) * cos(angle);
 	}
 	else if (new_w->iso_p == 2)//v Mirror image slanting right:
 	{
 		*x = (tmp_x - tmp_y) * cos(angle * (pi / 180));
 		*y = ((tmp_x + tmp_y) * -sin(angle * (pi / 180))) - tmp_z;
-		//new_w->x_mid = (new_w->x_mid + new_w->y_mid) * cos(angle);
-        //		new_w->y_mid = (new_w->x_mid - new_w->y_mid) * cos(angle);
 	}
 	else if (new_w->iso_p == 3)//^ Mirror image slanting left:
 	{
 		*x = (tmp_x + tmp_y) * -cos(angle * (pi / 180));
 		*y = ((tmp_x - tmp_y) * -sin(angle * (pi / 180))) - tmp_z;
-		//new_w->x_mid = (new_w->x_mid + new_w->y_mid) * cos(angle);
 	}
 }
 
@@ -84,7 +77,6 @@ int			fdf_redraw(t_w *new_w)
     else
         while (i < (new_w->p_nb - 1))
         {
-		    //fdf_p_struct(new_w->point, i);
 		    if (new_w->p[i].y == new_w->p[i + 1].y)
 			    fdf_dw_ln(new_w->p, *new_w, i, i + 1);//horiz lines
 	 	    if (((i + new_w->mv) > 0) && ((i + new_w->mv) < new_w->p_nb))
@@ -110,7 +102,6 @@ void		fdf_speed_up(t_w *new_w)
     i = mv - 1;
     while (i--)
     {
-        //fdf_p_struct(new_w->p, i);
         if (new_w->p[i].y == new_w->p[i + 1].y)
             fdf_dw_ln(new_w->p, *new_w, i, i + 1);
         if (((i + new_w->mv) > 0) && ((i + new_w->mv) < new_w->p_nb))

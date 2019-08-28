@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drafe <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nshelly <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/15 16:31:26 by drafe             #+#    #+#             */
-/*   Updated: 2019/04/16 19:18:30 by drafe            ###   ########.fr       */
+/*   Created: 2019/04/15 19:57:16 by nshelly           #+#    #+#             */
+/*   Updated: 2019/04/24 13:45:55 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isalnum(int c)
+#include "libft.h"
+
+int	ft_isalnum(int c)
 {
-	if (((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-		|| (c >= '0' && c <= '9'))
-	{
+	if (ft_isalpha(c) || ft_isdigit(c))
 		return (1);
-	}
-	else
-		return (0);
+	return (0);
 }

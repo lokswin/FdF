@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <string.h>
 
 static void			fdf_ln_sz(t_w *new_w)
 {
@@ -22,15 +23,12 @@ static void			fdf_ln_sz(t_w *new_w)
         new_w->map_ln = 8;
     else
         new_w->map_ln = 15;
-    //new_w->file_l = 0;
 }
 
 /*
 ** **************************************************************************
 **	int file_to_arr(char *s, int i)
 **	Function to store coords
-**	//printf("buff[%d]=%s", x-1, buff[x-1]);
-**	//printf("\nbuff[0]=%s tmp_z=%d one_line[i].x=%d i=%d x=%d\n",buff[0], tmp_z[x], one_line[i].x, i, x);
 **	while //printf("buff[%d]=%s, tmp_z[%d]= %d", x, buff[x], x, tmp_z[x]);
 ** **************************************************************************
 */
@@ -43,6 +41,7 @@ static void			file_to_arr(t_w *new_w, char *s, int y)
 
 	i = 0;
 	x = 0;
+	ft_putstr(s);
 	buff_splt = ft_strsplit(s, ' ');
 	while (buff_splt[x] != '\0')
 		x++;
@@ -51,14 +50,27 @@ static void			file_to_arr(t_w *new_w, char *s, int y)
 		new_w->p[new_w->p_nb].x = new_w->map_ln * i;
 		new_w->p[new_w->p_nb].y = new_w->map_ln * y;
 		new_w->p[new_w->p_nb].z = new_w->map_ln * ft_atoi(buff_splt[i]);
-        //new_w->p[new_w->p_nb].color =
-        //if (new_w->p[p_nb].z > new_w->file_l)
-        //    new_w->file_l = new_w->p[p_nb].z;
         new_w->p_nb++;
 		i++;
 	}
 }
 
+
+int count_points(char *s)
+{
+    int i;
+    int count;
+
+    i = 0;
+    count = 0;
+    while (s[i] != '\0')
+    {
+        if ((s[i] > 32) && (s[i + 1] <= 32))
+            count++;
+        i++;
+    }
+    return(count);
+}
 /*
 ** **************************************************************************
 **	static int fdf_read(t_crds all_ps[260000], int fd)
@@ -71,29 +83,51 @@ static void		fdf_read(int fd, t_w *new_w)
 	char		*buff;
 	int			gnl_res;
 	int			y;
+	char        *line;
+	int         count;
+	char        **lines;
+	char        *new_line;
+	int i;
 
+	count = -1;
     new_w->p_nb = 0;
     new_w->file_w = 0;
-	y = 0;
+	y = -1;
+	line = "\0";
+	new_line = "\n";
 	gnl_res = 1;
 	while (gnl_res)
 	{
-		if ((gnl_res = ft_get_next_line(fd, &buff)) && (gnl_res == -1))
+		if ((gnl_res = get_next_line(fd, &buff)) && (gnl_res == -1))
 		{
 			ft_putstr_fd("GNL read error", 2);
 			ft_strdel(&buff);
 			exit(1);
 		}
+		if (buff)
+		    buff = ft_strjoin(buff, new_line);//add a new_line to buff
+		if (count == -1)
+		    count = count_points(buff);//point numbers in x
         if (new_w->file_w == 0)
         {
             new_w->file_w = ft_strlen(buff);
             fdf_ln_sz(new_w);
         }
-        file_to_arr(new_w, buff, y++);
+        if(buff)
+            line = ft_strjoin_del(line, buff, 2);// join buff to line and free buff
+        y++;//number of lines
 		if (new_w->file_w == 0)
 			new_w->file_w = ft_strlen(buff);
-		ft_strdel(&buff);
 	}
+	ft_putstr(line);
+    new_w->p = (t_crds *)malloc(sizeof(t_crds) * count * y);
+	lines = ft_strsplit(line, '\n');
+	i = 0;
+	while(i < y)
+    {
+        file_to_arr(new_w, lines[i], i);
+	    i++;
+    }
     new_w->file_h = y;
 }
 
@@ -125,9 +159,7 @@ static int		fdf_open(char *source_f)
 
 int				main(int argc, char **argv)
 {
-	t_crds		all_ps[260000];
 	t_w			new_w;
-	int			p_nb;
 	int			fd;
 
 	if (argc != 2 || (argv[1] == NULL))
@@ -136,8 +168,7 @@ int				main(int argc, char **argv)
 		exit(1);
 	}
 	//fd = fdf_open(argv[1]);
-    fd = fdf_open("maps/elem.fdf");
-	new_w.p = all_ps;
+    fd = fdf_open("maps/42.fdf");
     new_w.f_name = argv[1];
 	fdf_read(fd, &new_w);
 	fdf_new_win(&new_w);

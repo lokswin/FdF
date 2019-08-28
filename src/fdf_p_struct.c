@@ -34,8 +34,6 @@ void		fdf_p_struct(t_crds *point, int p_nb)
 
 }
 
-
-
 /*
 ** **************************************************************************
 **	man /usr/share/man/man3/mlx.1

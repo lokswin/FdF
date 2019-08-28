@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drafe <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nshelly <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/16 19:44:43 by drafe             #+#    #+#             */
-/*   Updated: 2019/04/16 19:44:55 by drafe            ###   ########.fr       */
+/*   Created: 2019/04/23 13:26:24 by nshelly           #+#    #+#             */
+/*   Updated: 2019/04/26 18:19:37 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "libft.h"
 
 void	ft_putchar_fd(char c, int fd)
 {
+	if (!fd || fd < 0)
+		return ;
 	write(fd, &c, 1);
 }

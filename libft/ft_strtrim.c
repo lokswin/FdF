@@ -3,37 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drafe <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nshelly <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/10 15:56:58 by drafe             #+#    #+#             */
-/*   Updated: 2019/05/30 18:52:34 by drafe            ###   ########.fr       */
+/*   Created: 2019/04/16 21:48:04 by nshelly           #+#    #+#             */
+/*   Updated: 2019/04/26 14:54:35 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strtrim(char const *s)
+char			*ft_strtrim(char const *s)
 {
-	char	*tmp_ptr;
-	size_t	st;
-	size_t	en;
+	size_t	n;
+	size_t	m;
+	size_t	l;
 	size_t	i;
+	char	*p;
 
+	if (!s)
+		return (NULL);
+	n = ft_pfch(s);
+	m = ft_plch(s);
+	if (n >= m)
+		return (ft_strnew(0));
+	if (!(p = ft_strnew(m - n + 1)))
+		return (NULL);
+	l = m - n;
 	i = 0;
-	if (!s || (st = 0))
-		return (0);
-	en = ft_strlen(s);
-	while (((s[st] == ' ') || (s[st] == '\t')) || (s[st] == '\n'))
-		st++;
-	while (((s[en - 1] == ' ') || (s[en - 1] == '\t')) || (s[en - 1] == '\n'))
-		en--;
-	if ((int)(i = en - st) < 0)
-		i = 0;
-	if (!(tmp_ptr = ((char*)malloc((i + 1) * sizeof(*s)))))
-		return (0);
-	i = 0;
-	while (st < en)
-		tmp_ptr[i++] = s[st++];
-	tmp_ptr[i] = '\0';
-	return (tmp_ptr);
+	while (i <= l)
+	{
+		p[i] = s[n];
+		i++;
+		n++;
+	}
+	p[i] = '\0';
+	return (p);
 }

@@ -3,33 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drafe <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nshelly <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/02 21:00:39 by drafe             #+#    #+#             */
-/*   Updated: 2019/05/25 20:49:48 by drafe            ###   ########.fr       */
+/*   Created: 2019/04/07 11:47:35 by nshelly           #+#    #+#             */
+/*   Updated: 2019/04/23 23:50:55 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int						ft_memcmp(const void *s1, const void *s2, size_t n)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	const unsigned char *cast1;
-	const unsigned char *cast2;
-	size_t				i;
+	size_t			i;
+	unsigned char	*p1;
+	unsigned char	*p2;
 
-	if (n <= 0)
-		return (0);
 	i = 0;
-	cast1 = s1;
-	cast2 = s2;
-	while (i < n - 1)
-	{
-		if (*cast1 != *cast2)
-			break ;
+	p1 = (unsigned char*)s1;
+	p2 = (unsigned char*)s2;
+	if (n == 0)
+		return (0);
+	while (i < n && p1[i] == p2[i])
 		i++;
-		cast1++;
-		cast2++;
-	}
-	return (*cast1 - *cast2);
+	if (i == n)
+		return (0);
+	return ((int)(p1[i] - p2[i]));
 }

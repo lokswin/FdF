@@ -78,16 +78,13 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 		step = fabs(dy);
 	dx = dx / step;
 	dy = dy / step;
-    //x1 += new_w.x_mid;
-    //y1 += new_w.y_mid;
     x_n = x1;
     y_n = y1;
 	while(step--)
 	{
         decimal = (dx2 > dy2) ? get_line_pnt(x1, x2, x_n) : get_line_pnt(y1, y2, y_n);
         new_w.color = color_lint(all_ps[p1].color, all_ps[p2].color, decimal);
-		//printf("x1=%f, y1=%f, step=%d, dx=%f, dy=%f iso_p=%d\n", x1, y1, step, dx, dy, new_w.iso_p);
-	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, x_n + new_w.x_mid, y_n + new_w.y_mid, new_w.color);//100 + x_n, 380 + y_n, new_w.color);
+	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, x_n + new_w.x_mid, y_n + new_w.y_mid, new_w.color);
 		x_n = x_n + dx;
     	y_n = y_n + dy;
 	}
@@ -120,9 +117,3 @@ int					fdf_draw(t_w *new_w)
 **	man /usr/share/man/man3/mlx_pixel_put.1
 ** **************************************************************************
 */
-
-		/* i = (x1 * (new_w.bitspp / 8)) + (y1 * new_w.ln_sz);
-		new_w.img[i] = new_w.color; // B — Blue
-		new_w.img[++i] = new_w.color >> 8; // G — Green
-		new_w.img[++i] = new_w.color >> 16; // R — Red
-		new_w.img[++i] = 0;*/
