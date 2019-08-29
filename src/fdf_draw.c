@@ -21,7 +21,7 @@
 
 static void			fdf_mv_find(t_w *new_w)
 {
-	int			tmp;
+    double			tmp;
 	int			i;
 
 	tmp = 0;
@@ -32,7 +32,7 @@ static void			fdf_mv_find(t_w *new_w)
 			tmp = new_w->p[i].x;
 		i++;
 	}
-	new_w->mv = 1 + (tmp / new_w->map_ln);
+	new_w->mv = 1.0 + (tmp / new_w->map_ln);
 }
 
 /*
@@ -42,7 +42,7 @@ static void			fdf_mv_find(t_w *new_w)
 ** **************************************************************************
 */
 
-int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
+int			fdf_dw_ln(t_w *new_w, int p1, int p2)
 {
     double	x1;
     double	y1;
@@ -58,16 +58,16 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
     double     decimal;
 
 
-    max_min(&new_w);
-    set_colors(&new_w);
-	x2 = all_ps[p2].x;
-	y2 = all_ps[p2].y;
-	fdf_rotate_xy(&x2, &y2, all_ps[p2].z, &new_w);
+    max_min(new_w);
+    set_colors(new_w);
+	x2 = new_w->p[p2].x;
+	y2 = new_w->p[p2].y;
+	fdf_rotate_xy(&x2, &y2, new_w->p[p2].z, new_w);
 	dx = x2;
 	dy = y2;
-	x1 = all_ps[p1].x;
-	y1 = all_ps[p1].y;
-	fdf_rotate_xy(&x1, &y1, all_ps[p1].z, &new_w);
+	x1 = new_w->p[p1].x;
+	y1 = new_w->p[p1].y;
+	fdf_rotate_xy(&x1, &y1, new_w->p[p1].z, new_w);
 	dx = dx - x1;
 	dy = dy - y1;
     dx2 = fabs(x1 - x2);
@@ -83,8 +83,8 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 	while(step--)
 	{
         decimal = (dx2 > dy2) ? get_line_pnt(x1, x2, x_n) : get_line_pnt(y1, y2, y_n);
-        new_w.color = color_lint(all_ps[p1].color, all_ps[p2].color, decimal);
-	 	mlx_pixel_put(new_w.mlx_p, new_w.win_p, x_n + new_w.x_mid, y_n + new_w.y_mid, new_w.color);
+        new_w->color = color_lint(new_w->p[p1].color, new_w->p[p2].color, decimal);
+	 	mlx_pixel_put(new_w->mlx_p, new_w->win_p, x_n + new_w->x_mid, y_n + new_w->y_mid, new_w->color);
 		x_n = x_n + dx;
     	y_n = y_n + dy;
 	}
@@ -101,10 +101,11 @@ int			fdf_dw_ln(t_crds *all_ps, t_w new_w, int p1, int p2)
 
 int					fdf_draw(t_w *new_w)
 {
-	mlx_key_hook(new_w->win_p, fdf_keys, new_w);
+
+    mlx_hook(new_w->win_p, 2, 0, fdf_keys, new_w);
 	fdf_mv_find(new_w);
 	fdf_redraw(new_w);
-	mlx_loop(new_w->mlx_p);
+    mlx_loop(new_w->mlx_p);
 	return (0);
 }
 

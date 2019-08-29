@@ -30,13 +30,7 @@ static void		fdf_xy_mid(t_w *new_w)
 void		fdf_new_win(t_w *new_w)
 {
 
-    new_w->mv_x = 0;
-    new_w->mv_y = 0;
-    new_w->mv_z = 0;
-    new_w->iso_p = 0;
-    new_w->angle = 26.4;
-    new_w->max_color = 0xFFFFFF;
-    new_w->min_color = 0xFFFFFF;
+    fdf_initials(new_w);
 	fdf_xy_mid(new_w);
 	if (!(new_w->mlx_p = mlx_init()))  
 	{

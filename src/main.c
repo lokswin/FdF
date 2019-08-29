@@ -128,7 +128,6 @@ static void		fdf_read(int fd, t_w *new_w)
         file_to_arr(new_w, lines[i], i);
 	    i++;
     }
-    new_w->file_h = y;
 }
 
 /*

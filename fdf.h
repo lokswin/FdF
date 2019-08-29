@@ -28,9 +28,9 @@
 
 typedef struct		s_crds
 {
-	int				x;
-	int				y;
-	int				z;
+    double				x;
+    double			    y;
+    double				z;
 	int             color;
 }					t_crds;
 
@@ -45,8 +45,6 @@ typedef struct		s_w
 {
 	char			*f_name;
 	int				file_w;
-	int				file_h;
-    int             file_l;
     int				width;
 	int				height;
 	int				x_mid;
@@ -54,26 +52,30 @@ typedef struct		s_w
 	int             mv_x;
     int             mv_y;
     int             mv_z;
+    int             mv_z2;
 	int				map_ln;
 	int				color;
 	int				iso_p;
 	int				p_nb;
-	int				mv;
+    int				mv;
 	double			angle;
+	double          angle_x;
+    double          angle_y;
 	t_crds			*p;
 	void			*mlx_p;
 	void			*win_p;
     int         max_color;
     int         min_color;
-    int         max_z;
-    int         min_z;
-
+    double         max_z;
+    double        min_z;
+    int         m;
 }					t_w;
 
 void				fdf_new_win(t_w *new_w);
-int					fdf_dw_ln(t_crds *p, t_w new_w, int p1, int p2);
+int			fdf_dw_ln(t_w *new_w, int p1, int p2);
 int					fdf_draw(t_w *new_w);
 int					fdf_keys(int key, void *param);
+int			fdf_keys1(int key, void *param);
 t_w					*fdf_ui(t_w *new_w, int first_time);
 void				fdf_rotate_xy(double *x, double *y, double z, t_w *new_w);
 int					fdf_redraw(t_w *new_w);
@@ -83,6 +85,6 @@ void                set_colors(t_w *new_w);
 int                 color_lint(int c1, int c2, double decimal_percent);
 double		get_line_pnt(double start, double end, double curr);
 void    fdf_color_change(t_w *new_w);
-
+void fdf_initials(t_w *new_w);
 
 #endif

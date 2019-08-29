@@ -21,38 +21,21 @@
 
 void		fdf_rotate_xy(double *x, double *y, double z, t_w *new_w)
 {
-	static double	angle;
-	double	tmp_x;
+    double	tmp_x;
 	double	tmp_y;
     double	tmp_z;
-	double pi;
 
 	tmp_z = 0;
-	pi = M_PI;
-	angle = new_w->angle;
 	if ((z != 0))
         tmp_z = z + new_w->mv_z;
-	tmp_x = *x + new_w->mv_x;
-	tmp_y = *y + new_w->mv_y;
-	if (new_w->iso_p == 0)//<- Slanting right:
+    tmp_x = (*x*new_w->m + new_w->mv_x) * cos(new_w->angle_y) + tmp_z * sin(new_w->angle_y);
+    tmp_y = (*y*new_w->m + new_w->mv_y) * cos(new_w->angle_x) + tmp_z * sin(new_w->angle_x);
+    tmp_z = (-1) * (*x) * sin(new_w->angle_y) + (-1) * (*y) * sin(new_w->angle_x) + (tmp_z * cos(new_w->angle_x)) * cos(new_w->angle_y) + new_w->mv_z2;
+
+	if (new_w->iso_p == 0 || new_w->iso_p == 1)
 	{
-		*x = ((tmp_x + tmp_y) * cos(angle * (pi / 180)));
-		*y = ((tmp_x - tmp_y) * -sin(angle * (pi / 180))) - tmp_z;
-	}
-	else if (new_w->iso_p == 1)//-> Slanting left:
-	{
-		*x = (tmp_x - tmp_y) * -cos(angle * (pi / 180));//-
-		*y = ((tmp_x + tmp_y) * -sin(angle * (pi / 180))) - tmp_z;
-	}
-	else if (new_w->iso_p == 2)//v Mirror image slanting right:
-	{
-		*x = (tmp_x - tmp_y) * cos(angle * (pi / 180));
-		*y = ((tmp_x + tmp_y) * -sin(angle * (pi / 180))) - tmp_z;
-	}
-	else if (new_w->iso_p == 3)//^ Mirror image slanting left:
-	{
-		*x = (tmp_x + tmp_y) * -cos(angle * (pi / 180));
-		*y = ((tmp_x - tmp_y) * -sin(angle * (pi / 180))) - tmp_z;
+        *x = (tmp_x) * cos(new_w->angle) + (tmp_y) * sin(new_w->angle);
+        *y = ((tmp_y) * cos(new_w->angle) - (tmp_x) * sin(new_w->angle) - tmp_z);
 	}
 }
 
@@ -71,16 +54,16 @@ int			fdf_redraw(t_w *new_w)
 	i = 0;
     parts = new_w->p_nb / 500;
 	mlx_clear_window(new_w->mlx_p, new_w->win_p);
-	fdf_ui(new_w, 0);
+	fdf_ui(new_w, 0);//window white and yellow
     if (parts >= 2)
         fdf_speed_up(new_w);
     else
         while (i < (new_w->p_nb - 1))
         {
 		    if (new_w->p[i].y == new_w->p[i + 1].y)
-			    fdf_dw_ln(new_w->p, *new_w, i, i + 1);//horiz lines
+			    fdf_dw_ln(new_w, i, i + 1);//horiz lines
 	 	    if (((i + new_w->mv) > 0) && ((i + new_w->mv) < new_w->p_nb))
-		    	fdf_dw_ln(new_w->p, *new_w, i, i + new_w->mv);//vert lines
+		    	fdf_dw_ln(new_w, i, i + new_w->mv);//vert lines
 		i++;
 	}
 	return (1);
@@ -103,18 +86,18 @@ void		fdf_speed_up(t_w *new_w)
     while (i--)
     {
         if (new_w->p[i].y == new_w->p[i + 1].y)
-            fdf_dw_ln(new_w->p, *new_w, i, i + 1);
+            fdf_dw_ln(new_w, i, i + 1);
         if (((i + new_w->mv) > 0) && ((i + new_w->mv) < new_w->p_nb))
-            fdf_dw_ln(new_w->p, *new_w, i, i + new_w->mv);
+            fdf_dw_ln(new_w, i, i + new_w->mv);
         if (new_w->p[i + mv].y == new_w->p[i + 1 + mv].y)
-            fdf_dw_ln(new_w->p, *new_w, i + mv, i + 1 + mv);
+            fdf_dw_ln(new_w, i + mv, i + 1 + mv);
         if (((i + new_w->mv + mv) > 0) && ((i + new_w->mv + mv) < new_w->p_nb))
-            fdf_dw_ln(new_w->p, *new_w, i + mv, i + new_w->mv + mv);
+            fdf_dw_ln(new_w, i + mv, i + new_w->mv + mv);
         if (new_w->p[i + (2 * mv)].y == new_w->p[i + 1 + (2 * mv)].y)
-            fdf_dw_ln(new_w->p, *new_w, i + (2 * mv), i + 1 + (2 * mv));
+            fdf_dw_ln(new_w, i + (2 * mv), i + 1 + (2 * mv));
         if (((i + new_w->mv + (2 * mv)) > 0) && \
 		((i + new_w->mv + (2 * mv)) < new_w->p_nb))
-            fdf_dw_ln(new_w->p, *new_w, i + (2 * mv), \
+            fdf_dw_ln(new_w, i + (2 * mv), \
 			i + new_w->mv + (2 * mv));
     }
 }
@@ -128,3 +111,18 @@ void		fdf_speed_up(t_w *new_w)
 **	man /usr/share/man/man3/mlx_pixel_put.1
 ** **************************************************************************
 */
+
+void fdf_initials(t_w *new_w)
+{
+    new_w->mv_x = 0;
+    new_w->mv_y = 0;
+    new_w->mv_z = 0;
+    new_w->mv_z2 = 0;
+    new_w->iso_p = 0;
+    new_w->angle = 26.57 * (M_PI / 180);
+    new_w->max_color = 0xFFFFFF;
+    new_w->min_color = 0xFFFFFF;
+    new_w->m = 1;
+    new_w->angle_x = 0;
+    new_w->angle_y = 0;
+}
