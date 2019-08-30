@@ -41,7 +41,6 @@ static void			file_to_arr(t_w *new_w, char *s, int y)
 
 	i = 0;
 	x = 0;
-	ft_putstr(s);
 	buff_splt = ft_strsplit(s, ' ');
 	while (buff_splt[x] != '\0')
 		x++;
@@ -77,55 +76,52 @@ int count_points(char *s)
 **	Function to read files
 ** **************************************************************************
 */
-
-static void		fdf_read(int fd, t_w *new_w)
+static void     fdf_more_read(t_read *r, t_w *new_w)
 {
-	char		*buff;
-	int			gnl_res;
-	int			y;
-	char        *line;
-	int         count;
-	char        **lines;
-	char        *new_line;
-	int i;
-
-	count = -1;
-    new_w->p_nb = 0;
-    new_w->file_w = 0;
-	y = -1;
-	line = "\0";
-	new_line = "\n";
-	gnl_res = 1;
-	while (gnl_res)
-	{
-		if ((gnl_res = get_next_line(fd, &buff)) && (gnl_res == -1))
-		{
-			ft_putstr_fd("GNL read error", 2);
-			ft_strdel(&buff);
-			exit(1);
-		}
-		if (buff)
-		    buff = ft_strjoin(buff, new_line);//add a new_line to buff
-		if (count == -1)
-		    count = count_points(buff);//point numbers in x
+    while (r->gnl_res)
+    {
+        if ((r->gnl_res = get_next_line(r->fd, &r->buff)) && (r->gnl_res == -1))
+        {
+            ft_putstr_fd("GNL read error", 2);
+            ft_strdel(&r->buff);
+            exit(1);
+        }
+        if (r->buff)
+            r->buff = ft_strjoin(r->buff, r->new_line);
+        if (r->count == -1)
+            r->count = count_points(r->buff);
         if (new_w->file_w == 0)
         {
-            new_w->file_w = ft_strlen(buff);
+            new_w->file_w = ft_strlen(r->buff);
             fdf_ln_sz(new_w);
         }
-        if(buff)
-            line = ft_strjoin_del(line, buff, 2);// join buff to line and free buff
-        y++;//number of lines
-		if (new_w->file_w == 0)
-			new_w->file_w = ft_strlen(buff);
-	}
-	ft_putstr(line);
-    new_w->p = (t_crds *)malloc(sizeof(t_crds) * count * y);
-	lines = ft_strsplit(line, '\n');
+        if(r->buff)
+            r->line = ft_strjoin_del(r->line, r->buff, 2);
+        r->y++;
+        if (new_w->file_w == 0)
+            new_w->file_w = ft_strlen(r->buff);
+    }
+}
+static void		fdf_read(int fd, t_w *new_w)
+{
+    t_read r;
+	int i;
+
+	r.fd = fd;
+    new_w->p_nb = 0;
+    new_w->file_w = 0;
+    r.count = -1;
+    r.y = -1;
+    r.line = "\0";
+    r.new_line = "\n";
+    r.gnl_res = 1;
+    fdf_more_read(&r, new_w);
+    new_w->p = (t_crds *)malloc(sizeof(t_crds) * r.count * r.y);
+    r.lines = ft_strsplit(r.line, '\n');
 	i = 0;
-	while(i < y)
+	while(i < r.y)
     {
-        file_to_arr(new_w, lines[i], i);
+        file_to_arr(new_w, r.lines[i], i);
 	    i++;
     }
 }

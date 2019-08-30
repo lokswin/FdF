@@ -6,7 +6,7 @@
 /*   By: drafe <drafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 17:32:09 by drafe             #+#    #+#             */
-/*   Updated: 2019/08/19 20:30:21 by drafe            ###   ########.fr       */
+/*   Updated: 2019/08/30 03:17:52 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,25 @@
 **	Function draw instructions
 ** **************************************************************************
 */
+static void     fdf_more_ui_man(t_w *new_w)
+{
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 205, 0xFFFFFF, "    + -     : Altitude");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 225, 0xFFFFFF, "    C       : Change color");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 245, 0xFFFFFF, "    ESC     : Quit");
+    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+			45, 265, 0xFFFFFF, "    SPACE   : Reset");
+    ft_putstr("\n\t*** FdF by nshelly & drafe ***\n\n Man:\n\
+	\t^ v     : Zoom\n\t< >     : Rotation arount Z-axis\n\tu i     : Rotation arount Y-axis\n\tj k     : Rotation arount X-axis\n\t\tA D    \t: Move X-axis\n\t\tW S    \t: Move \
+Y-axis\n\t\tQ E    \t: Move Z-axis\n\t\t+ -     : Altitude\n\
+	\tc       : Change color\n\t\tESC     : Quit\n\t\tSPACE   : Reset");
+}
 
 static void		fdf_ui_man(t_w *new_w)
 {
-    mlx_string_put(new_w->mlx_p, new_w->win_p, \
+   	mlx_string_put(new_w->mlx_p, new_w->win_p, \
 			45, 45, 0x00FF00, "   *****FdF by nshelly & drafe *****");
     mlx_string_put(new_w->mlx_p, new_w->win_p, \
 			45, 65, 0xFFFFFF, "    v ^     : Zoom");
@@ -37,18 +52,7 @@ static void		fdf_ui_man(t_w *new_w)
 			45, 165, 0xFFFFFF, "    W S     : Move Y-axis");
     mlx_string_put(new_w->mlx_p, new_w->win_p, \
 			45, 185, 0xFFFFFF, "    Q E     : Move X-axis");
-    mlx_string_put(new_w->mlx_p, new_w->win_p, \
-			45, 205, 0xFFFFFF, "    + -     : Altitude");
-    mlx_string_put(new_w->mlx_p, new_w->win_p, \
-			45, 225, 0xFFFFFF, "    C       : Change color");
-    mlx_string_put(new_w->mlx_p, new_w->win_p, \
-			45, 245, 0xFFFFFF, "    ESC     : Quit");
-    mlx_string_put(new_w->mlx_p, new_w->win_p, \
-			45, 265, 0xFFFFFF, "    SPACE   : Reset");
-    ft_putstr("\n\t*** FdF by nshelly & drafe ***\n\n Man:\n\
-	\t^ v     : Zoom\n\t< >     : Rotation arount Z-axis\n\tu i     : Rotation arount Y-axis\n\tj k     : Rotation arount X-axis\n\t\tA D    \t: Move X-axis\n\t\tW S    \t: Move \
-Y-axis\n\t\tQ E    \t: Move Z-axis\n\t\t+ -     : Altitude\n\
-	\tc       : Change color\n\t\tESC     : Quit\n\t\tSPACE   : Reset");
+    fdf_more_ui_man(new_w);
 }
 
 /*
@@ -72,11 +76,11 @@ static void		fdf_ui_back(t_w *new_w)
 			mlx_pixel_put(new_w->mlx_p, new_w->win_p, j, i, new_w->max_color);
 			if (!(j % 28))
 			{
-                mlx_pixel_put(new_w->mlx_p, new_w->win_p, j, i, 0xFFC300);
-                mlx_pixel_put(new_w->mlx_p, new_w->win_p, j++, i, 0xFFC300);
-                mlx_pixel_put(new_w->mlx_p, new_w->win_p, j++, i, 0xFFC300);
-                mlx_pixel_put(new_w->mlx_p, new_w->win_p, j++, i, 0xFFC300);
-                mlx_pixel_put(new_w->mlx_p, new_w->win_p, j++, i, 0xFFC300);
+				mlx_pixel_put(new_w->mlx_p, new_w->win_p, j, i, 0xFFC300);
+				mlx_pixel_put(new_w->mlx_p, new_w->win_p, j++, i, 0xFFC300);
+				mlx_pixel_put(new_w->mlx_p, new_w->win_p, j++, i, 0xFFC300);
+				mlx_pixel_put(new_w->mlx_p, new_w->win_p, j++, i, 0xFFC300);
+				mlx_pixel_put(new_w->mlx_p, new_w->win_p, j++, i, 0xFFC300);
             }
 			j++;
 		}
@@ -126,26 +130,8 @@ static size_t		fdf_name_len(t_w *new_w)
  * 53      : esc
 ** **************************************************************************
 */
-
-int			fdf_keys(int key, void *param)
+static void fdf_more_keys(int key, t_w *new_w)
 {
-	t_w		*new_w;
-    double  a;
-
-    a = 5 * (M_PI / 180);
-	new_w = (t_w *)param;
-    if (key == 123 || key == 124)
-        new_w->angle = key == 123 ? (new_w->angle + a) : (new_w->angle - a);
-    if (key == 38 || key == 40)
-    {
-        new_w->angle_x = key == 38 ? (new_w->angle_x + a) : (new_w->angle_x - a);
-        new_w->angle_y = 0;
-    }
-    if (key == 32 || key == 34)
-    {
-        new_w->angle_y = key == 32 ? (new_w->angle_y + a) : (new_w->angle_y - a);
-        new_w->angle_x = 0;
-    }
     if (key == 126 || (key == 125 && new_w->m > 1))
         new_w->m = key == 126 ? (new_w->m + 1) : (new_w->m - 1);
     if (key == 78 || key == 69)
@@ -160,8 +146,30 @@ int			fdf_keys(int key, void *param)
         fdf_initials(new_w);
     if (key == 8)
         fdf_color_change(new_w);
-	if (key == 53)
-		exit(0);
+    if (key == 53)
+        exit(0);
+}
+
+int			fdf_keys(int key, void *param)
+{
+	t_w		*new_w;
+	double  a;
+
+	a = 5 * (M_PI / 180);
+	new_w = (t_w *)param;
+	if (key == 123 || key == 124)
+		new_w->angle = key == 123 ? (new_w->angle + a) : (new_w->angle - a);
+	if (key == 38 || key == 40)
+	{
+		new_w->angle_x = key == 38 ? (new_w->angle_x + a) : (new_w->angle_x - a);
+		new_w->angle_y = 0;
+	}
+	if (key == 32 || key == 34)
+	{
+		new_w->angle_y = key == 32 ? (new_w->angle_y + a) : (new_w->angle_y - a);
+		new_w->angle_x = 0;
+	}
+    fdf_more_keys(key, new_w);
     fdf_redraw(new_w);
 	return ((int)param);
 }

@@ -26,6 +26,34 @@
 ** **************************************************************************
 */
 
+typedef struct		s_draw
+{
+    double	x1;
+    double	y1;
+    double  x2;
+    double  y2;
+    double	dx;
+    double	dy;
+    int		step;
+    double  dx2;
+    double  dy2;
+    double  x_n;
+    double  y_n;
+    double     decimal;
+}					t_draw;
+
+typedef struct		s_read
+{
+    char		*buff;
+    int			gnl_res;
+    int			y;
+    char        *line;
+    int         count;
+    char        **lines;
+    char        *new_line;
+    int         fd;
+}					t_read;
+
 typedef struct		s_crds
 {
     double				x;
