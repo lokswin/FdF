@@ -6,7 +6,7 @@
 /*   By: rgwayne- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 20:40:26 by rgwayne-          #+#    #+#             */
-/*   Updated: 2019/08/14 20:41:01 by rgwayne-         ###   ########.fr       */
+/*   Updated: 2019/08/30 05:32:40 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*ft_strjoin_del(char const *s1, char const *s2, int nb)
 /*
 ** Return a new string resulting of the concatenation of the two string. If it
 ** succed it also free:
- * (1)---the first string ,
- * (2)---the second string ,
- * (3)---both  or
+** (1)---the first string ,
+** (2)---the second string ,
+** (3)---both  or
 ** none (0).
 */
