@@ -6,7 +6,7 @@
 #    By: drafe <drafe@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/12 20:00:16 by drafe             #+#    #+#              #
-#    Updated: 2019/08/11 17:05:22 by drafe            ###   ########.fr        #
+#    Updated: 2019/08/31 21:12:56 by nshelly          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,31 +23,34 @@ LIBS = -L./Libft/ -lft\
 
 OBJS = $(SRCS:.c=.o)
 
-SRCS = main.c\
-	fdf_draw.c\
-	fdf_ui.c\
-	fdf_p_struct.c\
-	fdf_reform.c\
-	fdf_new_win.c\
+SRCS = src/main.c\
+	src/fdf_draw.c\
+	src/fdf_ui.c\
+	src/fdf_reform.c\
+	src/fdf_new_win.c\
+	src/fdf_colors.c\
+	src/fdf_color_change.c\
+	src/fdf_keys.c\
+	src/fdf_points.c
 
 all: $(NAME)
 
 $(NAME):$(OBJS) | lib
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 %.o: %.c $(HEADERS)
-	@$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -I . -o $@ -c $<
 
 lib:
-	@make -C./Libft
+	make -C./Libft
 
 clean:
-	@make clean -C./Libft
-	@rm -rf $(OBJS)
+	make clean -C./Libft
+	rm -rf $(OBJS)
 
 fclean: clean
-	@make fclean -C./Libft
-	@rm -f $(NAME)
+	make fclean -C./Libft
+	rm -f $(NAME)
 
 re: fclean all
 

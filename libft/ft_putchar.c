@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drafe <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nshelly <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 19:42:54 by drafe             #+#    #+#             */
-/*   Updated: 2019/05/28 19:11:20 by drafe            ###   ########.fr       */
+/*   Created: 2019/04/23 13:07:23 by nshelly           #+#    #+#             */
+/*   Updated: 2019/04/26 18:17:02 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "unistd.h"
 
-void				ft_putchar(char c)
+void	ft_putchar(char c)
 {
-	unsigned char cast;
-
-	cast = (char)c;
-	write(1, &cast, 1);
+	write(1, &c, 1);
 }

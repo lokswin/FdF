@@ -3,41 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drafe <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nshelly <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/17 20:09:12 by drafe             #+#    #+#             */
-/*   Updated: 2019/05/31 19:20:34 by drafe            ###   ########.fr       */
+/*   Created: 2019/04/26 15:55:14 by nshelly           #+#    #+#             */
+/*   Updated: 2019/04/26 15:56:08 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_atoi_spaces(int c)
+int		ft_atoi(const char *str)
 {
-	if (c == '\t' || c == '\n' || c == '\v'		\
-		|| c == '\f' || c == '\r' || c == ' ')
-		return (1);
-	else
-		return (0);
-}
+	long	result;
+	int		negative;
+	long	t;
 
-int			ft_atoi(const char *str)
-{
-	long	res;
-	int		sign;
-
-	res = 0;
-	sign = 1;
-	while (ft_atoi_spaces(*str))
+	result = 0;
+	negative = 1;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
-	if (*str == '-')
-		sign = sign * -1;
-	if ((*str == '-') || (*str == '+'))
-		str++;
-	while ((*str >= '0') && (*str <= '9'))
+	if (*str == '-' || *str == '+')
 	{
-		res = (res * 10) + (long)(*str - '0');
+		if (*str == '-')
+			negative = -1;
 		str++;
 	}
-	return ((int)(res * sign));
+	while (*str >= '0' && *str <= '9')
+	{
+		t = result;
+		result = result * 10 + (*str++ - '0') * negative;
+		if (t < 0 && result > t)
+			return (0);
+		if (t > 0 && result < t)
+			return (-1);
+	}
+	return (result);
 }

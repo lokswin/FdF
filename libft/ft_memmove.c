@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove_chk.c                                   :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drafe <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nshelly <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/03 17:49:12 by drafe             #+#    #+#             */
-/*   Updated: 2019/05/28 19:40:05 by drafe            ###   ########.fr       */
+/*   Created: 2019/04/07 10:23:03 by nshelly           #+#    #+#             */
+/*   Updated: 2019/04/11 05:19:50 by nshelly          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void				*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	unsigned char	*cast_dst;
-	unsigned char	*cast_src;
+	char		*d;
+	const char	*s;
+	char		*cd;
+	const char	*cs;
 
-	if (!dst && !src)
-		return (0);
-	cast_dst = (unsigned char *)dst;
-	cast_src = (unsigned char *)src;
-	if (src < dst)
-	{
-		cast_dst += len;
-		cast_src += len;
+	d = dst;
+	s = src;
+	cd = d + (len - 1);
+	cs = s + (len - 1);
+	if (d < s)
 		while (len--)
-			*--cast_dst = *--cast_src;
-	}
+			*d++ = *s++;
 	else
+	{
 		while (len--)
-			*cast_dst++ = *cast_src++;
+			*cd-- = *cs--;
+	}
 	return (dst);
 }
